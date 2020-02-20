@@ -1,0 +1,131 @@
+
+--创建一个序列，初始值是1000，递增10，最大值是9999
+create sequence seq_name1
+start with 1000
+increment by 10
+maxvalue 9999;
+
+--查看当前用户的序列
+select * from user_sequences;
+
+--查看所有用户的序列
+select * from all_sequences;
+
+--获取序列的下个值
+select seq_name1.nextval from dual;
+
+--获取序列的当前值
+select seq_name1.currval from dual;
+
+--删除序列seq_name1
+drop sequence seq_name1;
+
+--建表时添加非空约束
+create table NN(
+	ID number(10) not null,
+	NAME varchar2(10) constraint nn_name_nn not null,
+	AGE number(3),
+	SEX char(1)
+);
+
+--修改表时添加非空约束
+alter table NN modify(
+	AGE number(3) not null
+);
+
+----取消非空约束
+alter table NN modify(
+	AGE number(3) null
+);
+
+--建表时添加唯一约束
+create table UQ(
+	ID number(10) unique, --列级约束
+	NAME varchar2(10),
+	AGE number(3),
+	constraint uq_name_uq unique(name) --表级约束
+);
+
+--建表后添加唯一约束
+alter table UQ modify(AGE number(3) unique); --列级约束
+alter table UQ add constraint uq_age_uq unique(age); --表级约束
+
+--删除唯一约束
+alter table UQ modify(AGE number(3)); --列级约束
+alter table UQ drop constraint uq_age_uq;
+
+--建表时添加主键约束
+create table PK1(
+	ID number(10) primary key --列级约束
+);
+create table PK2(
+	ID number(10),
+	constraint pk1_id_pk primary key(ID) --表级约束
+);
+
+--联合主键约束
+create table PK3(
+	ID number(10),
+	NAME varchar2(10),
+	constraint pk3_id_name_pk primary key(ID,NAME) --联合主键约束只能用表级约束定义
+);
+
+--建表后创建主键约束
+alter table PK3 modify(ID number(10) primary key); --列级约束
+alter table PK3 add(constraint pk3_id_pk primary key(id)); --表级约束
+
+--删除主键
+alter table PK3 drop constraint pk3_id_pk; --表级约束
+alter table PK3 drop primary key; --主键只有一个所以可以
+
+--创建class和student表并建立主外键关系
+create table CLASS(
+	ID number(11) primary key,
+	NAME varchar2(20)
+);
+create table STUDENT(
+	SID number(11) primary key,
+	NAME varchar2(20),
+	CID number(11),
+	constraint stu_cid_fk foreign key(CID) references CLASS(ID)
+);
+
+--创建表时添加检查约束
+create table CK(
+	ID number check(ID>0 and ID<1000),
+	NAME varchar2(10),
+	SEX varchar2(1),
+	constraint ck_sex_ck check(SEX in ('M','F'))
+);
+
+--创建表后添加检查约束
+alter table CK add(constraint ck_name_ck check(NAME like 'stu%'));
+
+--删除检查约束
+alter table CK drop constraint ck_name_ck;
+
+--创建视图并验证约束视图
+--1、创建视图
+create or replace view V_EMP(ID,NAME,SAL)
+as
+select ID,NAME,SAL from EMPLOYEE where id=1
+with check option;
+--2、验证视图
+insert into V_EMP values(2,'mayun',9000); --报错：视图where字句违规
+update V_EMP set NAME='mayun2' where ID=1; --正常运行
+
+--查询视图
+select * from V_EMP;
+
+--删除视图
+drop view V_EMP;
+
+--在employee表的sal列创建索引
+create index I_EMP on EMPLOYEE(sal);
+
+--重建索引
+alter index I_EMP rebuild;
+
+--删除索引
+drop index I_EMP;
+

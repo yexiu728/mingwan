@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul>
+    <li>11</li>
+    <li>22</li>
+    <li>33</li>
+    <li>44</li>
+</ul>
+
+<script>
+
+    var ul = document.querySelector("ul");
+    var old = ul.children[0];
+
+    var li = document.createElement("li");
+    li.innerText = "新";
+
+    var out = ul.replaceChild(li, old);
+    console.log(out);
+
+</script>
+
+</body>
+</html>

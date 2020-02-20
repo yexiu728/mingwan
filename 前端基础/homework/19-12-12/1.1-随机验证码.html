@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("随机生成一个0-9a-z的四位数字验证码<hr>");
+
+    var en = [
+        "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
+        "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n",
+        "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+    ];
+
+    function getYZM(num) {
+        var result = "";
+        for(var i = 0; i < num; i++) {
+            result += en[Math.floor(Math.random() * en.length)];
+        }
+        return result;
+    }
+
+    document.write("验证码为：" + getYZM(4));
+
+</script>
+
+</body>
+</html>

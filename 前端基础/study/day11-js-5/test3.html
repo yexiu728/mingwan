@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    // 获取不确定参数的最大值和最小值，以数组方式返回
+    function getMaxMin() {
+        var max = arguments[0];
+        var min = arguments[0];
+        for(var i = 1; i < arguments.length; i++) {
+            if(arguments[i] > max) {
+                max = arguments[i];
+            }
+            if(arguments[i] < min) {
+                min = arguments[i];
+            }
+        }
+        return [max, min];
+    }
+
+    var numMaxMin = getMaxMin(1,2,3,4,5,9,8,7,6,0);
+    console.log(numMaxMin);
+
+</script>
+
+</body>
+</html>

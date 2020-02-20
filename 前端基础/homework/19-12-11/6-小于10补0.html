@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("小于 10 补 0<hr>");
+
+    function zero(num) {
+        if(num < 10 && num >= 0) {
+            num = "0" + num;
+        } else {
+            num = "" + num;
+        }
+        return num;
+    }
+
+    document.write(zero(0));
+
+</script>
+
+</body>
+</html>

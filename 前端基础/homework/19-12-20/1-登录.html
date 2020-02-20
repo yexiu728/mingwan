@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            /*-webkit-user-select: none; 不选择文字 */
+        }
+        .register {
+            width: 200px;
+            height: 50px;
+            line-height: 50px;
+            margin: 0 auto;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 0 5px 5px skyblue;
+            background-color: skyblue;
+        }
+        .form {
+            width: 400px;
+            /*height: 220px;*/
+            position: absolute;
+            left: 50%;
+            top: 200px;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 5px 5px #fff;
+            background: yellowgreen;
+            z-index: 999;
+            display: none;
+        }
+        .form .info {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            background: skyblue;
+            cursor: move;
+            -webkit-user-select: none;
+        }
+        .form .destroy {
+            width: 50px;
+            height: 50px;
+            line-height: 45px;
+            text-align: center;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 50px;
+            background: green;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            right: 0;
+        }
+        .back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(0, 0, 0, .8);
+            z-index: 100;
+            display: none;
+        }
+        .form .input div {
+            height: 50px;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+        .form .input span {
+            width: 100px;
+            height: 50px;
+            display: inline-block;
+        }
+        .form .input i {
+            font-style: normal;
+            font-size: 20px;
+            opacity: 0;
+            color: #f00;
+        }
+        .form .input input {
+            width: 250px;
+            height: 30px;
+            font-size: 16px;
+            padding-left: 5px;
+        }
+        .form .login input {
+            width: 167px;
+            height: 30px;
+            margin-right: 30px;
+        }
+        .form .login input:last-of-type {
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="back"></div>
+
+<div class="register">登录</div>
+
+<div class="form">
+    <div class="info">正在登录中 . . .</div>
+
+    <div class="input">
+        <div>
+            <span>用户名：</span>
+            <input type="text" name="username">
+            <i>×</i>
+        </div>
+        <div>
+            <span>密码：</span>
+            <input type="password" name="password">
+            <i>×</i>
+        </div>
+        <div class="login">
+            <input type="button" value="提交" name="submit">
+            <input type="button" value="注册账号" name="register">
+        </div>
+    </div>
+
+    <div class="destroy">×</div>
+
+</div>
+
+
+<script>
+
+    // 登录按钮
+    var register = document.querySelector(".register");
+    // 登录表单
+    var form = document.querySelector(".form");
+    // 拖动控件
+    var info = document.querySelector(".info");
+    // 销毁控件
+    var destroy = document.querySelector(".form .destroy");
+    // 背景遮罩层
+    var back = document.querySelector(".back");
+
+    // 表单元素
+    var unBtn = document.querySelector(".form .input input[name=username]");
+    var pwdBtn = document.querySelector(".form .input input[name=password]");
+    var subBtn = document.querySelector(".form .input input[name=submit]");
+    var regBtn = document.querySelector(".form .input input[name=register]");
+
+    // 错误提示
+    var erros = document.querySelectorAll(".form .input i");
+
+    // 登录提交按钮
+    var login = function () {
+        erros.forEach(function (value) {
+            value.style.opacity = "0";
+            // console.log(value);
+        });
+
+        var un = unBtn.value.trim();
+        var pwd = pwdBtn.value.trim();
+
+        var flag = true;
+
+        if(un === "") {
+            flag = false;
+            erros[0].style.opacity = "1";
+            alert("用户名不能为空");
+        } else if(un !== "admin") {
+            flag = false;
+            erros[0].style.opacity = "1";
+        }
+
+        if(pwd === "") {
+            flag = false;
+            erros[1].style.opacity = "1";
+            alert("密码不能为空");
+        } else if(pwd !== "123") {
+            flag = false;
+            erros[1].style.opacity = "1";
+        }
+
+        if(flag) {
+            alert("登录成功");
+            location.href = "success.html";
+        }
+    };
+
+    // 前往注册按钮
+    regBtn.onclick = function () {
+        location.href = "2-注册.html";
+    };
+
+    // 提交按钮
+    subBtn.onclick = login;
+
+    // 默认非拖动状态
+    var flag = false;
+
+    // 点击背景层，退出填写
+    back.onclick = function() {
+        form.style.display = "none";
+        back.style.display = "none";
+        flag = false;
+    };
+
+    // 点击销毁
+    destroy.onclick = function() {
+        form.style.display = "none";
+        back.style.display = "none";
+    };
+
+    // 点击显示表单
+    register.onclick = function () {
+        form.style.display = "block";
+        back.style.display = "block";
+        form.style.left = "50%";
+        form.style.top = "200px";
+
+        // 初始化
+        erros.forEach(function (value) {
+            value.style.opacity = "0";
+        });
+    };
+
+    // 左上角坐标
+    var tempX = 0;
+    var tempY = 0;
+
+    // 拖动功能
+    // 判断拖动状态
+    info.onmousedown = function (ev) {
+        flag = true;
+        tempX = ev.clientX - form.offsetLeft;
+        tempY = ev.clientY - form.offsetTop;
+    };
+    document.onmouseup = function () {
+        if(flag) flag = false;
+    };
+
+    // 注册拖动事件
+    document.onmousemove = function (ev) {
+        // 如果不是拖动状态，不执行
+        if(!flag) {
+            return;
+        }
+
+        // 坐标 = 鼠标新坐标 - (初始值：鼠标坐标 - 盒子坐标)
+
+        form.style.left = ev.clientX - tempX + "px";
+        form.style.top = ev.clientY -  tempY + "px";
+
+    };
+
+</script>
+
+</body>
+</html>

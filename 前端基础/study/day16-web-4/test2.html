@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+
+        .box {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: 100px;
+            left: 500px;
+            background-color: pink;
+        }
+
+    </style>
+
+</head>
+<body>
+<input type="button" value="字节跳动">
+<div class="box"></div>
+
+<script>
+
+    var btn = document.querySelector("input");
+    var box = document.querySelector(".box");
+
+    var timeId = 0;
+    btn.onclick = function () {
+        if(timeId) {
+           return;
+        }
+        timeId = setInterval(function () {
+            box.style.left = (box.offsetLeft + Math.floor(Math.random() * 200) - 100) + "px";
+            box.style.top = (box.offsetWidth + Math.floor(Math.random() * 400) - 200) + "px";
+        }, 10);
+        setTimeout(function () {
+            timeId = clearInterval(timeId);
+        }, 2000)
+    };
+
+</script>
+
+</body>
+</html>

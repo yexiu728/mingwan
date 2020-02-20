@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="box">
+    请输入密码：<input type="password" class="psw"> <input type="button" value="眼睛" class="btn">
+</div>
+
+<script>
+
+    var psw = document.querySelector(".box .psw");
+    var btn = document.querySelector(".box .btn");
+
+    console.dir(btn);
+
+    btn.onclick = function () {
+        // psw.type = psw.type === "password" ? "text" : "password";
+
+        if(psw.type === "password") {
+            btn.style.color = "#f00";
+            psw.type = "text";
+        } else if(psw.type === "text") {
+            btn.style.color = "#000";
+            psw.type = "password";
+        }
+    };
+
+</script>
+
+</body>
+</html>

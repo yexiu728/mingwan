@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input type="button" value="按钮1">
+<input type="button" value="按钮2">
+<input type="button" value="按钮3">
+<input type="button" value="按钮4">
+<input type="button" value="按钮5">
+
+<script>
+
+    var inputs = document.querySelectorAll("input");
+    console.log(inputs);
+
+    var arr = Array.from(inputs);
+    console.log(arr);
+
+    inputs.forEach(function (value) {
+        value.onclick = function (ev) {
+            // alert("恭喜你，你中了 " + Math.floor(Math.random() * 100000) + " 元奖金");
+            inputs.forEach(function (value1) {
+                value1.style.backgroundColor = "";
+            });
+            value.style.backgroundColor = "pink";
+        }
+    });
+
+</script>
+
+</body>
+</html>

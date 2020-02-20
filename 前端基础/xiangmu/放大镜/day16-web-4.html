@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            width: 350px;
+            height: 350px;
+            margin: 100px;
+            border: 1px solid #ccc;
+            position: relative;
+        }
+
+        .big {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            top: 0;
+            left: 360px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            display: none;
+        }
+
+        .mask {
+            width: 175px;
+            height: 175px;
+            background: rgba(255, 255, 0, 0.4);
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* 把鼠标指针换成移动图标 */
+            cursor: move;
+            display: none;
+        }
+
+        .small {
+            position: relative;
+            height: 350px;
+            width: 350px;
+        }
+
+        .active .mask,
+        .active .big {
+            display: block;
+        }
+
+        .big img {
+            /* 相对定位：相对自己原本的位置定位，原来的位置保留的 */
+            position: absolute;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- 整个大盒子 -->
+<div class="main" id="main">
+    <div class="small">
+        <!--小图-->
+        <img alt="" class="smallImg" src="images/iphoneX.jpg" width="350" />
+        <!-- 遮挡层,黄色的小方块 -->
+        <div class="mask"></div>
+    </div>
+    <!--大层-->
+    <div class="big">
+        <!--大图-->
+        <img alt="" class="bigImg" src="images/iphoneX.jpg" width="800" />
+    </div>
+</div>
+
+
+<script>
+
+    var main = document.querySelector(".main");
+    var small = document.querySelector(".small");
+    var smallImg = document.querySelector(".smallImg");
+    var mask = document.querySelector(".mask");
+    var big = document.querySelector(".big");
+    var bigImg = document.querySelector(".bigImg");
+
+    small.onmouseenter = function () {
+        mask.style.display = "block";
+        big.style.display = "block";
+    };
+    small.onmouseleave = function () {
+        mask.style.display = "none";
+        big.style.display = "none";
+    };
+
+    small.onmousemove = function (ev) {
+        // 轴坐标 = 鼠标坐标 - 外盒子位置 - 本身宽高一半
+        var x = ev.pageX - main.offsetLeft - mask.offsetWidth / 2;
+        var y = ev.pageY - main.offsetTop - mask.offsetWidth / 2;
+
+        // console.log("page：" + x + ", " + y);
+
+        // 禁止越界
+        if(x < 0) x = 0;
+        if(y < 0) y = 0;
+        if(x > main.offsetWidth - mask.offsetWidth) x = main.offsetWidth - mask.offsetWidth;
+        if(y > main.offsetHeight - mask.offsetHeight) y = main.offsetHeight - mask.offsetHeight;
+
+        mask.style.left = x + "px";
+        mask.style.top = y + "px";
+
+        var temp = bigImg.offsetWidth / smallImg.offsetWidth;
+        bigImg.style.left = -temp * x + "px";
+        bigImg.style.top = -temp * y + "px";
+    }
+
+</script>
+
+</body>
+</html>

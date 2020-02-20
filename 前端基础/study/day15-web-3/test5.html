@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<ul>
+    <li><a href="#">删除1</a></li>
+    <li><a href="#">删除2</a></li>
+    <li><a href="#">删除3</a></li>
+    <li><a href="#">删除4</a></li>
+    <li><a href="#">删除5</a></li>
+</ul>
+
+<script>
+    var aList = document.querySelectorAll("ul li a");
+    /*aList.forEach(function (value) {
+        value.onclick = function() {
+            value.parentNode.parentNode.removeChild(value.parentNode);
+        }
+    })*/
+    for(var i = 0; i < aList.length; i++) {
+        aList[i].onclick = function() {
+            this.parentNode.parentNode.removeChild(this.parentNode);
+        }
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /*body {
+            font-size: 30px;
+        }*/
+    </style>
+</head>
+<body>
+
+<script>
+
+    var num = parseInt(prompt("请输入大小"));
+    while(num > 100 && num <= 0) {
+        num = parseInt(prompt("数值太大或小于0了，请重新输入"));
+    }
+
+    /* 打印正方形 */
+    for(var i = 0; i < num; i++) {
+        for(var j = 0; j < num; j++) {
+            document.write("★");
+        }
+        document.write("<br>");
+    }
+    document.write("<hr>");
+
+    /* 打印直角三角形 */
+    for(var i = 0; i < num; i++) {
+        for(var j = 0; j <= i; j++) {
+            document.write("★");
+        }
+        document.write("<br>");
+    }
+    document.write("<hr>");
+
+    /* 打印倒直角三角形 */
+    for(var i = 0; i < num; i++) {
+        for(var j = 0; j < num - i; j++) {
+            document.write("★");
+        }
+        document.write("<br>");
+    }
+    document.write("<hr>");
+
+    /* 打印等腰三角形 */
+    for(var i = 1; i <= num; i++){
+        for(var j = 0; j < num - i; j++) {
+            document.write("&nbsp;&nbsp;");
+        }
+        for(var j = 0; j < i; j++) {
+            document.write("★&nbsp;&nbsp;");
+        }
+        document.write("<br>")
+    }
+/*
+    ★ 4
+   ★★ 3
+  ★★★ 2
+ ★★★★ 1
+★★★★★ 0
+    */
+</script>
+
+</body>
+</html>

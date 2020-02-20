@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .nav {
+            background-color: #222;
+            color: #FFF;
+            height: 40px;
+            padding-left: 360px;
+        }
+        .nav ul li {
+            float: left;
+            list-style: none;
+            line-height: 40px;
+            margin-right: 50px;
+        }
+        .nav ul li:hover {
+            text-decoration: underline;
+        }
+        .nav li img {
+            vertical-align: middle;
+            height: 22px;
+        }
+        .nav .nav_denglu {
+            margin-left: 80px;
+            background: url("images/huyou.png") no-repeat left center;
+            padding-left: 22px;
+        }
+        .nav .nav_first:after {
+            content: "|";
+            color: #cccccc;
+            margin-left: 16px;
+        }
+
+        .logo {
+            margin-left: 360px;
+            margin-right: 320px;
+            height: 70px;
+            padding-top: 20px;
+            border-bottom: 2px solid #0a53a3;
+        }
+        .logo img {
+            vertical-align: middle;
+            width: 152px;
+            float: left;
+        }
+        .logo input[type=text] {
+            width: 460px;
+            height: 36px;
+            padding-left: 10px;
+            margin-left: 90px;
+            float: left;
+        }
+        .logo input[type=button] {
+            float: left;
+            width: 80px;
+            height: 40px;
+            border: none;
+            color: #FFF;
+            background-color: #0a53a3;
+        }
+        .logo ul {
+            float: left;
+            margin-top: 4px;
+            margin-left: 84px;
+        }
+        .logo ul li {
+            list-style: none;
+            float: left;
+            width: 108px;
+            line-height: 28px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        .logo ul li:after {
+            content: "|";
+            margin-left: 10px;
+            color: #e5e5e5;
+        }
+        .logo li img {
+            width: 28px;
+            height: 28px;
+        }
+        .logo ul span {
+            margin-left: 10px;
+        }
+        .logo ul .last:after {
+            content: "";
+        }
+
+        .tag {
+            margin-left: 360px;
+            margin-right: 320px;
+            border-bottom: 1px solid #efefef;
+        }
+        .tag ul {
+            height: 46px;
+            line-height: 46px;
+        }
+        .tag ul li {
+            float: left;
+            list-style: none;
+            margin-left: 30px;
+        }
+        .tag ul li:after {
+            content: '|';
+            margin-left: 30px;
+            color: #e5e5e5;
+        }
+        .tag ul .last:after {
+            content: "";
+        }
+        .tag ul .current {
+            color: #0a53a3;
+        }
+        .tag ul li:hover {
+            color: #0a53a3;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="nav">
+    <ul>
+        <li class="nav_first"><img src="images/souhu.png"></li>
+        <li>新闻</li>
+        <li>体育</li>
+        <li>汽车</li>
+        <li>房产</li>
+        <li>旅游</li>
+        <li>教育</li>
+        <li>时尚</li>
+        <li>科技</li>
+        <li>财经</li>
+        <li>娱乐</li>
+        <li>更多</li>
+        <li class="nav_denglu">登陆狐友</li>
+    </ul>
+</div>
+<div class="logo">
+    <img src="images/xinwen.png">
+    <input type="text" placeholder="大家都在搜：潜水员被鲸鱼吞入">
+    <input type="button" value="搜索">
+    <ul>
+        <li>
+            <img src="images/souhuhao.png">
+            <span>搜狐号</span>
+        </li>
+        <li>
+            <img src="images/sousuo.png">
+            <span>搜狐搜索</span>
+        </li>
+        <li class="last">
+            <img src="images/youxiang.png">
+            <span>搜狐邮箱</span>
+        </li>
+    </ul>
+</div>
+<div class="tag">
+    <ul>
+        <li class="current">首页</li>
+        <li>时政</li>
+        <li>国际</li>
+        <li>军事</li>
+        <li>警法</li>
+        <li>专题</li>
+        <li>公益</li>
+        <li>无人机</li>
+        <li>弧度</li>
+        <li>数学之道</li>
+        <li>知世</li>
+        <li class="last">神吐槽</li>
+    </ul>
+</div>
+
+</body>
+</html>

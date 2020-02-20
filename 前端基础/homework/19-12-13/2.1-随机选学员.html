@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("从以下学员名单中随机选出4个学员（不能重复）<hr>");
+
+    var arr = ["鹿晗","王俊凯","蔡徐坤","彭于晏","周杰伦","刘德华","赵本山"];
+
+    document.write("原数据为：" + arr + "<br>");
+
+    var peoples = [];
+    for(var i = 0; i < 4; i++) {
+        var random = Math.floor(Math.random() * arr.length);
+        var n = arr[random];
+        // 查看是否已在名单中
+        var flag = false; // 默认不在
+        for(var j = 0; j < peoples.length; j++) {
+            if(n === peoples[j]) {
+                flag = true;
+                break;
+            }
+        }
+
+        if(!flag) {
+            // 如果不在名单中，则添加
+            peoples[peoples.length] = n;
+        } else {
+            // 如果在名单中，则本次无效
+            i--;
+        }
+    }
+
+    document.write("抽到的名单为：" + peoples);
+
+</script>
+
+</body>
+</html>

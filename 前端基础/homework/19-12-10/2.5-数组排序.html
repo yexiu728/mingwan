@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("数组的排序：arr[5,1,2,4,3]排序后arr[1,2,3,4,5]<hr>");
+    var arr = [5,1,2,4,3];
+    document.write(arr + "<br>");
+
+    /* 冒泡排序 */
+    for(var i = 0; i < arr.length; i++) {
+        for(var j = 0; j < arr.length - 1 - i; j++) {
+            if(arr[j] > arr[j + 1]) {
+                var temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+            }
+        }
+    }
+    document.write(arr);
+
+    /* 第二种排序方法 */
+    document.write("<hr>");
+
+    arr = [5,1,2,4,3];
+    document.write(arr + "<br>");
+    for(var i = 0; i < arr.length - 1; i++) {
+        for(var j = i; j < arr.length; j++) {
+            if(arr[i] > arr[j]) {
+                var temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    document.write(arr);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("用户登录验证<hr>");
+
+    var userName = prompt("请输入用户名");
+    var password = prompt("请输入密码");
+
+    while(userName !== "admin" || password !== "123456") {
+        alert("用户名或密码错误");
+        userName = prompt("请输入用户名");
+        password = prompt("请输入密码");
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("判断是否为对称数组 arr[1,2,3,2,1]为对称数组<hr>");
+
+    var arr = [1,2,3,2,1];
+    document.write(arr + "<br>");
+    var flag = true;
+
+    for(var i = 0; i <= arr.length / 2 - 1; i++) {
+        if(arr[i] !== arr[arr.length - 1 - i]) {
+            flag = false;
+            break;
+        }
+    }
+    if(flag) {
+        document.write("对称数组");
+    } else {
+        document.write("不对称数组");
+    }
+
+</script>
+
+</body>
+</html>

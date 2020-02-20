@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--
+
+test1：数组方法
+
+    var arr1 = [11, 22, 55, 44, 33];
+    var arr2 = [66, 77, 88, 99];
+
+    concat
+        连接多个数组
+        连接后返回一个新数组，不会改变原数组
+        [].concat(数组1, 数组2 ...)
+        数组1.concat(数组2)
+            var concatArr = [].concat(arr1, arr2);
+            var concatArr2 = arr1.concat(arr2);
+
+    join([分隔符])
+        连接数组的元素
+        返回一个字符串，不会改变原数组
+        如果不写分隔符，默认使用逗号
+        用法
+            数组.join()
+        特殊用法：
+                如果想要字符串紧密相连，直接传入一个空串"" 即可
+        var joinStr = arr1.join("-");
+
+    push(元素1, 元素2 ...)
+        往数组末尾依次添加元素
+        返回数组的新长度，会改变原数组
+        var push = arr1.push(100, 200, 300);
+
+    pop()
+        删除数组末尾的元素，不用传参数
+        返回被删除的元素，会改变原数组
+        var pop = arr1.pop();
+
+    shift()
+        删除数组开头的元素，不需要传参数
+        返回被删除元素，会改变原数组
+        var shift = arr1.shift();
+
+    unshift(数据1, 数据2 ...)
+        往数组开头添加元素
+        返回数组的新长度，会改变原数组
+        var unshift = arr1.unshift(100);
+
+    reverse()
+        反转数组
+        返回反转之后的数组转成的字符串，会改变原数组
+        var reverse = arr1.reverse();
+
+    splice(开始索引, 删除的个数, 添加的元素...)
+        向数组中添加或删除项目
+        返回删除的项目，如果是添加，则返回值为空串，会改变原数组
+            参数1(必填)：要删除元素的索引值，第一位是0，最后一位是-1（或者长度）
+            参数2(必填)：删除的个数，个数为0 代表不删除
+            参数3：添加的元素，参数3 往后都代表添加的元素
+        用法
+            后添加：数组.splice(数组的长度, 0, 添加的元素)
+                var splice = arr1.splice(arr1.length, 0, 9999);
+            后删除：数组.splice(-1, 删除的个数);
+                var splice = arr1.splice(-1, 1);
+            前添加：数组.splice(0, 0, 添加的元素);
+                var splice = arr1.splice(0, 0, 9999);
+            前删除：数组.splice(0, 删除的个数);
+                var splice = arr1.splice(0, 1);
+        特殊用法：
+            清空数组：参数写上0 即可：数组.splice(0)
+                var splice = arr1.splice(0); // 返回数组中的元素
+
+    slice(start, end)
+        截取数据
+        返回截取后的数据，不改变原数组
+            参数1：选取的开始索引值
+            参数2：选取的结束索引值（不包括该元素）
+            var slice = arr1.slice(1, 2);
+
+    sort([排序的函数])
+        对指定数组进行排序
+        会改变原来的数组
+        如果要让它使用数值排序，就要写一个排序的函数
+            函数返回值大于1，右边的数往左，即从大到小排序 return b - a;
+            函数返回值小于1，右边的数往右，即从小到大排序 return a - b;
+        var sort = arr1.sort(function (a, b) {
+            // return a - b; // 从小到大
+            return b - a; // 从大到小
+        });
+
+    includes(元素)
+        查看数组是否包含该元素
+        返回true (包含)或 false (不包含)，不改变原数组
+        var includes = arr1.includes(11);
+
+    forEach(回调函数)
+        遍历数组
+        arr1.forEach(
+            function(value, index) {
+                // value 就是数组里面的每个元素
+                // index 就是每个索引
+                console.log(index, value);
+            }
+        )
+
+    filter(函数)
+        从数组中过滤
+        var filter = arr1.filter(function (value) {
+            return value < 30;
+        });
+
+    indexOf(数据)
+        查找数据在数组中的位置（索引）
+        查找结果只有两种情况：
+            1、查找成功，返回当前查找数据的索引值
+            2、找不到则返回 -1
+        特殊用法
+            数组名称.indexOf(数据, 从哪个索引开始);
+                默认是从0 开始找，找到最近的指定数据，并返回索引值
+                传入索引值，就是从传入的索引值开始往后找，找到最近的指定数据，并返回索引值
+
+test2：字符串方法
+    字符串不可改变 arr[0] = "" // 赋值不成功
+
+    indexOf(数据)
+        查找数据在字符串中的位置（索引）
+        返回索引值，不改变原字符串
+            如果存在，返回索引，如果不存在，返回-1
+            var indexOf = str.indexOf("2");
+
+    replace(旧值, 新值)
+        将字符串中的某些字符替换成新的字符
+        返回新字符串，不改变原字符串
+            第一个参数：需要替换的字符串，一般写正则表达式
+            第二个参数：新字符串用于替换原字符串
+        var replace = str.replace("1", "99");
+
+    slice(开始索引值, 结束索引值)
+        字符串提取
+        返回提取的字符串，不改变原字符串
+            字符串.slice(开始索引值, 结束索引值)
+            字符串.substring(开始索引值, 结束索引值)
+            字符串.substr(开始索引值, 提取个数)
+        var slice = str.slice(0, 2);
+
+    toUpperCase()
+        字母转大写
+        返回转成大写的字符串，不改变原字符串
+        var toCase = str.toUpperCase();
+
+    toLowerCase()
+        字母转小写
+        返回转成小写的字符串，不改变原字符串
+        var toCase = str.toLowerCase();
+
+-->
+
+</body>
+</html>

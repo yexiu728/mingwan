@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>css使用</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        div {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+        }
+        .red {
+            background-color: red;
+        }
+        .border {
+            border: 5px solid black;
+        }
+        #yellow {
+            background-color: yellow;
+        }
+    </style>
+    <link rel="stylesheet" href="css/index.css">
+    <!--
+    书写方式
+     1、内嵌式：代码厚重，只能用于当前页面        初学者使用
+     2、行内式-写在标签内：代码厚重，只能用于当前标签     特殊情况下使用
+     3、外联式：可以复用
+        创建css文件，使用link标签引入
+    -->
+
+    <!--
+    1、标签选择器
+        可以给指定的标签设置样式，不可以分别指定
+        标签名 { 属性名：属性值 }
+    2、类选择器
+        可以给指定的标签设置样式，一个标签可以有多个类样式，类名之间用空格隔开
+        .类名 { 属性名：属性值 }
+    3、id选择器
+        只能出现一次，不能重复
+        #id名 { 属性名：属性值 }
+    4、通配符选择器
+        范围广，匹配所有元素
+        * { 属性名：属性值 }
+
+    命名规范：
+        少用大写，使用驼峰命名法
+        不能以数字开头，不要使用中文
+
+    盒子模型，浮动，定位
+    -->
+
+</head>
+<body>
+
+<div style="width: 100px; height: 100px; background-color: green;"></div>
+<div class="red border"></div>
+<div></div>
+<div id="yellow"></div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("对以下学员随机排序，生成一个新数组<hr>");
+
+    var arr = ["鹿晗","王俊凯","蔡徐坤","彭于晏","周杰伦","刘德华","赵本山"];
+
+    document.write("原数据：" + arr + "<br>");
+
+    arr.sort(function (a, b) {
+        // 随机获得0、1、2 的数然后 -1，即可获得-1、0、1
+        // 返回-1 表示b < a，返回0 表示a = b，返回1 表示b > a
+        return Math.floor(Math.random() * 3) - 1;
+    });
+
+    document.write("结果为：" + arr);
+
+</script>
+
+</body>
+</html>

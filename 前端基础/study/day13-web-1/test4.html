@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            font-size: 200px;
+            display: inline-block;
+        }
+    </style>
+
+    <script src="js/yexiu.js"></script>
+</head>
+<body>
+
+<div class="g1" id="g">g</div>
+<div class="o1">o</div>
+<div class="o2">o</div>
+<div class="g2">g</div>
+<div class="l1">l</div>
+<div class="e1">e</div>
+
+<script>
+
+    /*var g1 = document.querySelector(".g1");
+    var o1 = document.querySelector(".o1");
+    var o2 = document.querySelector(".o2");
+    var g2 = document.querySelector(".g2");
+    var l1 = document.querySelector(".l1");
+    var e1 = document.querySelector(".e1");
+
+    g1.style.color = randomRGBColor();
+    o1.style.color = randomRGBColor();
+    o2.style.color = randomRGBColor();
+    g2.style.color = randomRGBColor();
+    l1.style.color = randomRGBColor();
+    e1.style.color = randomRGBColor();*/
+
+    var div = document.querySelectorAll("div");
+    div.forEach(function (value) {
+        value.style.color = randomRGBColor();
+    });
+
+    var a = document.getElementsByTagName("diva");
+    console.log(a);
+
+</script>
+
+</body>
+</html>

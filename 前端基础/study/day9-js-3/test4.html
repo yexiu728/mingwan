@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    var sum = 0;
+    for(var i = 1; i <= 100; i++) {
+        if(i % 3 === 0 || i % 7 === 0) {
+            continue;
+        }
+        sum += i;
+    }
+    console.log("1-100的和 (除了3或7的倍数) 为：" + sum);
+
+</script>
+
+</body>
+</html>

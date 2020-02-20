@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+
+        body {
+            text-align: center;
+        }
+        .one {
+            color: #F00;
+        }
+        .two {
+            width: 500px;
+            height: 100px;
+            margin: 0 auto;
+            border: 1px solid blue;
+        }
+        .three {
+            background: pink;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<input type="button" value="添加类">
+<input type="button" value="删除类">
+<input type="button" value="切换类">
+
+<div class="one two three ">
+    盒子上有好多个类名
+</div>
+
+
+<script>
+
+    var div = document.querySelector("div");
+    var input = document.querySelectorAll("input");
+    var add = input[0];
+    var remove = input[1];
+    var toggle = input[2];
+
+    add.onclick = function () {
+        div.classList.add("three");
+    };
+    remove.onclick = function () {
+        div.classList.remove("three");
+    };
+    toggle.onclick = function () {
+        div.classList.toggle("three");
+    };
+
+</script>
+
+</body>
+</html>

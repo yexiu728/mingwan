@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        div {
+            width: 500px;
+            height: 50px;
+            line-height: 50px;
+            background-color: pink;
+            margin-bottom: 10px;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<body>
+
+<div>onclick 鼠标单击</div>
+<div>ondblclick 鼠标双击</div>
+<div>onmouseover 鼠标移入</div>
+<div>onmouseout 鼠标移出</div>
+<div>onmousemove 鼠标移动</div>
+<div>onmousedown 鼠标按下</div>
+<div>onmouseup 鼠标弹起</div>
+
+<script>
+    var divs = document.querySelectorAll("div");
+
+    divs[0].onclick = function () {
+        alert("鼠标单击");
+    };
+
+    divs[1].ondblclick = function () {
+        alert("双击关注666");
+    };
+
+    divs[2].onmouseover = function () {
+        console.log("鼠标移入");
+    };
+
+    divs[3].onmouseout = function () {
+        console.log("鼠标移出");
+    };
+
+    divs[4].onmousemove = function () {
+        console.log("鼠标移动");
+    };
+
+    divs[5].onmousedown = function () {
+        console.log("鼠标按下");
+    };
+
+    divs[6].onmouseup = function () {
+        console.log("鼠标弹起");
+    };
+
+</script>
+
+</body>
+</html>

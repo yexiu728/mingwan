@@ -1,0 +1,89 @@
+
+创建数据库
+	create database test;
+查看数据库
+	show databases;
+切换数据库
+	use test;
+创建表
+	create table employee(
+		id int(10),
+		name varchar(20)
+	);
+查看数据库表
+	show tables;
+查看表结构
+	desc test;
+
+mysql主键可以自增
+#创建表并声明主键
+    create table test(
+        id int(11) primary key auto_increment,
+        name varchar(20),
+        age int(3),
+        sex char(2)
+        birth date
+    );
+
+#分页
+select * from employee where 1=1 limit 2,2; #从2(起始位置为0)开始选2条记录
+	第n页：(n-1)*pageSize,pageSize
+
+==========
+
+MVC设计模式：
+	m：model (entity dao)-entity [domain,pojo]，dao
+	v：view
+	c：controller
+
+实体类：entity
+连接类：dao层
+	连接：Connection
+	执行：PreparedStatement
+	结果：ResultSet
+
+==================================================
+
+MySQL 安装
+
+0、下载5.7解压版版本
+    https://dev.mysql.com/downloads/mysql/
+
+1、新建my.ini文件
+[client]
+port=3306
+default-character-set=utf8
+[mysqld] 
+# 设置为自己MYSQL的安装目录
+basedir=D:/software/mysql/mysql-5.7
+# 设置为MYSQL的数据目录，不要新建此目录
+datadir=D:/software/mysql/mysql-5.7/data
+port=3306
+#服务id，要保证不与其他MySQL重复
+server-id=111
+log-bin=mysql-bin
+character_set_server=utf8
+sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
+#开启查询缓存
+explicit_defaults_for_timestamp=true
+
+2、cmd安装
+    管理员身份进入cmd，进入安装目录下的bin目录
+    初始化my.ini文件：
+        mysqld --initialize-insecure --user=mysql
+    执行安装命令（注意改路径）
+        mysqld install mysql --defaults-file="D:/software/mysql/mysql-5.7/my.ini"
+        注：mysql是服务名称，可修改
+
+3、启动服务
+    启动mysql服务(mysql为前面步骤的服务名称)
+        net start mysql
+    登陆命令
+        mysql -uroot -p
+    修改root密码
+        update mysql.user set authentication_string=password('root') where user='root' and host='localhost';
+    刷新root权限
+        flush privileges;
+
+4、如果失败
+	移除mysql服务：mysqld remove 服务名称

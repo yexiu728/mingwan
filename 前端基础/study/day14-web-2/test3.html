@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form action="">
+
+    密码框：<input type="password">
+    <br>
+    单选框：<input type="radio" name="radio"><input type="radio" name="radio">
+    <br>
+    复选框：<input type="checkbox"><input type="checkbox">
+    <br>
+    文件框：<input type="file">
+    <br>
+    <select>
+        <option value="bj">北京</option>
+        <option value="sh">上海</option>
+        <option value="gz">广州</option>
+        <option value="sz">深圳</option>
+    </select>
+    <br>
+    <br>
+
+    <input type="button" value="按钮">
+
+</form>
+
+<script>
+
+    var psw = document.querySelector("form input[type=password]");
+    var radio = document.querySelector("form input[type=radio]");
+    var checkbox = document.querySelector("form input[type=checkbox]");
+    var file = document.querySelector("form input[type=file]");
+    var select = document.querySelector("form select option[value=gz]");
+    var btn = document.querySelector("form input[type=button]");
+
+    var flag = true;
+    btn.onclick = function () {
+        if(flag) {
+            // 密码可见
+            psw.type = "text";
+            // 单选框选中
+            radio.checked = true;
+            // 复选框选中
+            checkbox.checked = true;
+            // 表单禁用
+            file.disabled = true;
+            // 下拉框选中
+            select.selected = true;
+
+            flag = false;
+        } else {
+            psw.type = "password";
+            radio.checked = false;
+            checkbox.checked = false;
+            file.disabled = false;
+            select.selected = false;
+            flag = true;
+        }
+    };
+
+</script>
+
+</body>
+</html>

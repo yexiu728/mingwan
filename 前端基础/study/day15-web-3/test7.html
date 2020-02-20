@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .title {
+            width: 200px;
+            height: 100px;
+            background: #999;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 50px auto 0;
+        }
+        .main {
+            width: 400px;
+            height: 400px;
+            background: skyblue;
+            border-radius: 50%;
+            position: absolute;
+            top: 190px;
+            left: 760px;
+            transition: all 500ms ease;
+        }
+        .emoji {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+    </style>
+</head>
+<body>
+<input type="text">
+<div class="title"></div>
+<div class="main"></div>
+<div class="emoji"><img src="images/11.gif"></div>
+
+<script>
+
+    var title = document.querySelector(".title");
+    var main = document.querySelector(".main");
+    var emoji = document.querySelector(".emoji");
+    var input = document.querySelector("input");
+
+    // 鼠标按下
+    title.onmousedown = function () {
+        main.style.left = Math.floor(Math.random() * 1500) + "px";
+        main.style.top = Math.floor(Math.random() * 500) + "px";
+    };
+    // 鼠标弹起
+    title.onmouseup = function () {
+        main.style.left = "760px";
+        main.style.top = "190px";
+    };
+
+    // 跟随鼠标
+    document.onmousemove = function (ev) {
+        emoji.style.left = ev.clientX + 20 + "px";
+        emoji.style.top = ev.clientY + 20 + "px";
+    };
+
+    // 键盘输入
+    input.onkeydown = function (ev) {
+        if(ev.ctrlKey) {
+            console.log("ctrl 键被按下" + ev.keyCode);
+        }
+        if(ev.altKey) {
+            console.log("alt 键被按下" + ev.keyCode);
+        }
+        if(ev.shiftKey) {
+            console.log("shift 键被按下" + ev.keyCode);
+        }
+        if(ev.keyCode === 13) {
+            console.log("回车键被按下" + ev.keyCode);
+        }
+    }
+
+</script>
+
+</body>
+</html>

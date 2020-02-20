@@ -1,0 +1,154 @@
+
+test1：SQL函数(单行函数)
+    1、大小写控制函数
+        upper
+            UPPER(char) 用于将字符转换为大写形式
+        lower
+            LOWER(char) 用于将字符转换为小写形式
+        initcap
+            INITCAP(char) 用于将字符串中每个单词的首字符大写，其它字符小写。
+                单词之间用空格和非字母字符分隔
+    2、字符控制函数
+        length
+            LENGTH(char) 用于返回参数字符串的长度。
+                如果字符类型是VARCHAR2，返回字符的实际长度(字符个数)，
+                如果字符类型是CHAR，长度还包括后补的空格。
+        concat 和 ||
+            CONCAT(char1, char2) 用于返回两个字符串连接后的结果。
+                两个参数char1、char2是要连接的两个字符串。
+            char1 || char2 || char3 拼接多个字符串
+                不建议使用，建议使用多个concat来实现：concat(concat(char1, char2), char3)
+        trim
+            TRIM(c2 FROM c1) 把c1前后的c2截去
+        ltrim
+            LTRIM(c1[, c2]) 把c1左边(left)的c2截去
+        rtrim
+            RTRIM(c1[, c2]) 把c1右边(right)的c2截去
+        lpad
+            LPAD(char1, n, char2) 左补位函数
+                在char1左边补多个char2，直到char1长度为n
+        rpad
+            RPAD(char1, n, char2) 右补位函数
+                在char1右边补多个char2，直到char1长度为n
+        substr
+            SUBSTR(char, [m[, n]]) 返回char中从m位开始取n个字符的子串
+                字符串的首位计数从1开始
+                如果m = 0，则从首字符开始，如果m取负数，则从尾部开始
+                如果没有设置n，或者n的长度超过了char的长度，则取到字符串末尾为止
+        instr
+            INSTR(char1, char2[, m [, n]]) 返回在一个字符串中子串的位置
+                返回子串char2在源字符串char1中的位置
+                从m的位置开始搜索，没有指定m，从第1个字符开始搜索
+                n用于指定子串的第n次出现次数，如果不指定取值1
+                如果在char1中没有找到子串char2 ，返回0
+    3、数值操作函数
+        round
+            ROUND(n[, m]) 用于将参数n按照m的数字要求四舍五入
+                m必须是整数
+                m取正数则四舍五入到小数点后第m位
+                m取负数，则四舍五入到小数点前m位
+                m取0值则四舍五入到整数位
+                m缺省，默认值是0
+        trunc
+            TRUNC(n[, m])的功能是截取
+                其中n和m的定义和ROUND(n[, m])相同，
+                不同的是功能上按照截取的方式处理数字n，即截取后空位由0补上
+        mod
+            MOD(m, n)是取模函数，返回m除以n后的余数，如果n为0则直接返回m。
+        ceil
+            CEIL(n) 向上取整
+        floor
+            FLOOR(n) 向下取整
+    4、日期转换函数
+        to_date
+            TO_DATE(char[, fmt]) 将字符串按照定制格式转换为日期类型
+                char是要转换的字符串，fmt是转换格式
+                yyyy-mm-dd hh24:mi:ss day
+                day：周几
+        to_char
+            TO_CHAR(日期数据 , 格式) 把日期数据转换为字符数据，常用于格式化显示日期数据
+                SELECT TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi:ss day') "时间" FROM dual;
+                --> 2020-02-13 17:06:44 星期四
+    5、日期常用函数
+        months_between
+            MONTHS_BETWEEN(date1, date2) date1与date2相差的月份数
+                SELECT ROUND(MONTHS_BETWEEN(SYSDATE, TO_DATE('2019-12','yyyy-mm')), 1) "相隔(月)" FROM DUAL;
+        add_months
+            ADD_MONTHS(date, i) 返回日期date加上i个月后的日期值
+                参数i可以是任何数字，大部分时候取正值整数
+                如果i是小数，将会被截取整数后再参与运算
+                如果i是负数，则获得的是减去i个月后的日期值
+        last_day
+            LAST_DAY(date) 返回日期date所在月的最后一天
+        next_day
+            NEXT_DAY(date, char) 返回date日期的下一个周几的时间，周几是由参数char来决定的
+                在中文环境下，直接使用”星期三”这种形式，英文环境下，需要使用”WEDNESDAY”这种英文的周几。
+                为避免麻烦，可以直接用数字1-7表示周日-周六
+        least 和greatest
+            LEAST(expr1[, expr2[, expr3]]…) 参数列表中的最小值
+            GREATEST(expr1[, expr2[, expr3]]…) 参数列表中的最大值
+                两个函数都可以有多个参数值，但参数类型必须一致
+                LEAST和GREATEST是可以比较字符串日期的
+        extract
+            EXTRACT(date FROM datetime) 从参数datetime中提取参数date指定的数据，比如提取年、月、日
+                SELECT EXTRACT(YEAR FROM SYSDATE) current_year FROM DUAL;
+
+test2：日期
+    1、date
+        DATE类型的数据可以显示到年月日，也可以显示到年月日时分秒，主要看存储数据的精确度
+            存储年月日只显示年月日
+            没有存时分秒，或者时分秒位00:00:00，也都只显示年月日
+            存储年月日时分秒才会显示年月日时分秒
+    2、timestamp
+        TIMESTAMP表示时间戳，与DATE的区别是不仅可以保存日期和时间，还能保存小数秒，最高精度可以到ns(纳秒)级别
+    3、sysdate
+        SYSDATE 本质是一个Oracle的内部函数，用来返回当前的系统时间，精确到秒
+            默认显示格式是 DD-MON-RR ，只有年月日并不显示时分秒
+            SELECT TO_CHAR(SYSDATE,'yyyy-mm-dd day hh24:mi:ss') FROM DUAL;
+    4、systimestamp
+        SYSTIMESTAMP 也是Oracle的内部日期函数，返回当前系统日期和时间，精确到毫秒
+            SELECT TO_CHAR(SYSTIMESTAMP ,'yyyy-mm-dd hh24:mi:ss:ff3') FROM DUAL;
+
+test3：null
+    NULL是数据库里的重要概念，即空值。
+    空值空值不是空格或者0，是无效的，未指定的，未知的值。
+    当表中的某些字段值，数据未知或暂时不存在，取值NULL。
+    在数据库中，任何数据类型均可取值NULL。
+
+test4：空值函数
+    1、nvl
+        NVL(expr1, expr2) ：将 NULL 转变为非 NULL 值
+            如果 expr1 为 NULL ，则取值 expr2（expr2 是非空值）
+    2、nvl2
+        NVL2(expr1, expr2, expr3) ：和NVL函数功能类似，都是将NULL转变为非空值
+            判断expr1是否为NULL，如果不是NULL，返回expr2，如果是NULL，返回expr3。
+
+备注：
+    Oracle不区分大小写：
+    	Oracle语句不区分大小写，但是数据区分大小写
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

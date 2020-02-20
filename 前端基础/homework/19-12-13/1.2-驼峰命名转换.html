@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("传入用中杆分隔的字符串，调用函数后生成驼峰命名法的字符串<hr>");
+
+    var str = "get-element-by-id";
+    document.write("原字符串为：" + str + "<br>");
+
+    function toCamelCase(str) {
+        var index = 0;
+        while(index !== -1) {
+            index = str.indexOf("-");
+            var temp = str.slice(index + 1, index + 2);
+            str = str.replace("-" + temp, temp.toUpperCase());
+        }
+        return str;
+    }
+
+    document.write("结果为：" + toCamelCase(str));
+
+</script>
+
+</body>
+</html>

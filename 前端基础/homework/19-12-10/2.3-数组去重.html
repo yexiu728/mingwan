@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("数组去重：arr[10,20,10,30,40,50,30]去重后为arr[10,20,30,40,50]<hr>");
+
+    var arr = [10,20,10,30,40,50,30];
+    document.write(arr + "<br>");
+
+    // 定义一个新数组，用于存储不重复的值
+    var temp = [];
+    for(var i = 0; i < arr.length; i++) {
+        // 定义一个flag，用于记录是否重复，默认不重复
+        var flag = true;
+        // 遍历新数组，查看新数组中是否有与 arr[i] 重复的值
+        for(var j = 0; j < temp.length; j++) {
+            if(temp[j] === arr[i]) {
+                // 如果有重复，则设置为false，并退出遍历
+                flag = false;
+                break;
+            }
+        }
+        // 如果没有重复，则将元素向新数组中添加
+        if(flag) {
+            temp[temp.length] = arr[i];
+        }
+    }
+    arr = temp;
+    document.write(arr);
+
+</script>
+
+</body>
+</html>

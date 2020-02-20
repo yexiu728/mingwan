@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    // 28、5道单选题，标准答案为：[ADBCD]。四名同学分别输入答案，答对一题2分，判断每位同学获得几分，总分10分
+
+    // 答案
+    var key =["A", "D", "B", "C", "D"];
+    // 问题数量
+    var questions = 5;
+    // 学生人数
+    var students = 4;
+    // 存储每个学生的最终分数
+    var results = new Array(students);
+    // 存储每个学生的答案
+    var keys = new Array(students);
+
+    // 4 名学生依次回答问题
+    for(var i = 0; i < students; i++) {
+        alert("现在由第" + (i + 1) + "位同学作答");
+        // 默认该学生的分数为0
+        var result = 0;
+        // 默认该学生的回答为空
+        keys[i] = "";
+        // 依次回答5道题
+        for(var j = 0; j < questions; j++) {
+            var answer = prompt("请输入第" + (j + 1) + "道题的答案").toUpperCase();
+            if(answer === key[j]) {
+                // 如果答案正确，分数加2
+                result += 2;
+            }
+            keys[i] += answer;
+        }
+        results[i] = result;
+    }
+
+    // 输出结果
+    document.write("正确答案是：" + key + "<br>");
+    for(var stu = 0; stu < students; stu++) {
+        document.write("第 " + (stu + 1) + " 位学生的答案为：" + keys[stu] + "，分数为：" + results[stu] + "<br>");
+    }
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,194 @@
+
+test1：子查询
+        行：子查询返回单行数据则为单行，多行数据则为多行
+        列：表的数量(包括临时表)为一张则为单列，多张表则为多列
+    1、多行单列子查询
+        子查询返回多行，主查询中要使用多行比较操作符，包括IN、ALL、ANY
+        其中ALL和ANY不能单独使用，需要配合单行比较操作符>、>=、<、<=一起使用
+            --查询出部门中有职位是员工的员工的信息
+                select * from EMPLOYEE
+                    where dept_id in (select distinct(DEPT_ID) from EMPLOYEE where job='员工');
+    2、多行多列子查询
+        在查询语句中，FROM子句用来指定要查询的表。
+        如果要在一个子查询的结果中继续查询，则子查询出现在FROM 子句中，
+        这个子查询可以理解为临时表，只能在当前的SQL语句中有效
+            --查询比部门平均薪资低的员工信息
+                select e.*, a.avgSal "部门平均薪资"
+                    from EMPLOYEE e, (select dept_id deptId,avg(nvl(sal,0)) avgSal from EMPLOYEE group by dept_id) a
+                    where e.dept_id = a.deptId and nvl(sal,0)<=a.avgSal
+                    order by e.dept_id;
+    3、exists：判断子查询有没有数据返回 , 有则为 true, 没有则为 false
+        sql 执行顺序从主查询开始 , 把主查询中的数据传入子查询 ,作为条件中的参数
+        如果返回true则把该条记录拿出来，false则过滤掉该条记录
+            --查询有员工的部门
+                select * from DEPT d
+                    where exists (select * from EMPLOYEE e where e.dept_id=d.id);
+            --查询有部门的员工
+                select * from EMPLOYEE e
+                    where exists (select * from DEPT d where d.id=e.dept_id);
+    4、where子句中的子查询
+            单行单列子查询
+                --查询出薪水最高的人的信息
+                    select * from EMPLOYEE where sal in (select max(nvl(sal,0)) from EMPLOYEE);
+                ----查找和刘备同职位的员工
+                    select * from EMPLOYEE
+                        where job=(select job from EMPLOYEE where name='刘备');
+    5、having子句中的子查询
+        having即在group by中使用，不能单独使用的having
+            --查询列出最低薪水比3部门的最低薪水高的部门号
+                select e.dept_id from EMPLOYEE e
+                    group by e.dept_id
+                    having min(e.sal)>(select min(sal) from EMPLOYEE group by dept_id having dept_id=3);
+    6、select子句中的子查询
+        把子查询放在select子句部分，是连接查询的另一种表现形式
+        注意：每行结果对应子查询结果集只能有一行数据，否则无法容纳，显示报错
+            --查询员工信息，部门名称
+                select e.*, (select d.name from dept d where e.dept_id=d.id) "部门名称" from EMPLOYEE e;
+
+test2：分页查询
+    1、rownum 伪列
+        是对结果集加的标识行数据顺序的数字列(强调：先要有结果集)
+        伪列的操作类似于表中的列，但是它并不存实际保存在表中
+        可以对其进行查询操作，但是不能对其进行增加、修改或者是删除
+            select rownum, e.* from EMPLOYEE e;
+        总是从1开始排起的,不能从结果集中直接截取
+            --反例：结果为空，无数据
+                select rownum, e.* from EMPLOYEE e where rownum>=2;
+        如果利用ROWNUM截取结果集中的部分数据，需要先将ROWNUM查出作为临时表的一个列
+            --查询第6-10条数据
+                select a.*
+                    from (select rownum rn, e.* from EMPLOYEE e) a
+                    where a.rn between 6 and 10;
+    2、子查询实现分页
+        在ORACLE中利用ROWNUM的功能来进行分页
+            // 每页显示的数据的条数
+            int pageSize;
+                自定义
+            // 总记录数
+            int count;
+                select count(1) from employee;
+            // 总页数
+            int pageTotal;
+                pageTotal = count%pageSize==0?(count/pageSize) : (count/pageSize+1)
+                或者pageTotal = (count-1)/pageSize+1
+                    注意第二个公式count >= 1
+            // 分页数据序号区间
+               	int page;
+               	    page = (n - 1) * pageSize + 1 至 n * pageSize
+            --对员工表进行分页，每页显示10条记录，取出第二页的记录
+                select a.*
+                	from (select rownum rn, e.* from EMPLOYEE e) a
+                	where a.rn between 11 and 20;
+    3、分页与order by
+        需要先将数据排序后再加上rownum(如果在同一子句中会先加伪列才排序)，最后分页
+            --按工资倒序取出第5-10条数据
+                select *
+                    from
+                        (select rownum rn, a.*
+                            from (select e.* from EMPLOYEE e order by nvl(e.sal,0) desc) a
+                        ) b
+                    where b.rn between 5 and 10;
+
+test3：decode函数与case when
+        类似java的 switch case 语句，结果为一个字段，用在select语句中
+    1、decode函数
+        decode(判断字段 , 匹配 1 , 值 1 , 匹配 2 , 值 2 , … , 默认值)
+            --查询职员表，根据部门加薪，当部门分别是1、2、3时，加薪金额分别是薪水的1.1倍、1.2倍、1.05倍，否则不加薪
+                select e.*,
+                    decode(e.dept_id, 1, e.sal*1.1, 2, e.sal*1.2, 3, e.sal*1.05, e.sal) "最终薪水"
+                    from EMPLOYEE e;
+    2、case when语句
+        case 判断条件
+            when 匹配1 then 值1
+            when 匹配2 then 值2
+            ...
+            else 默认值
+            end ["别名"]
+                --查询职员表，根据部门加薪，当部门分别是1、2、3时，加薪金额分别是薪水的1.1倍、1.2倍、1.05倍，否则不加薪
+                    select e.*,
+                        case e.dept_id
+                            when 1 then e.sal*1.1
+                            when 2 then e.sal*1.2
+                            when 3 then e.sal*1.05
+                            else sal
+                            end "最终薪水"
+                        from EMPLOYEE e;
+
+test4：排序函数
+    1、row_number
+        根据col1分组，在分组内部根据col2排序，并返回次序(不作处理)：12312312...
+            row_number() over(
+                partition by coll order by cal2
+            )
+                --查询员工表，按照部门号分组显示，每组内按员工号排序，并赋予组内编号
+                    select row_number() over(
+                            partition by e.dept_id order by e.id
+                        ) "组内序号",
+                        e.*
+                        from EMPLOYEE e;
+    2、rank
+        根据col1分组，在分组内部根据col2排序，相同的数据返回相同排名(跳跃排序)：12245123...
+            rank() over(
+                partition by coll order by cal2
+            )
+                --查询员工表，按照部门号分组，同组内按薪水倒序排序，并给予组内排序编号
+                    select rank() over(
+                            partition by e.dept_id order by nvl(e.sal,0) desc
+                        ) "组内编号",
+                        e.*
+                        from EMPLOYEE e;
+    3、dense_rank
+        根据col1分组，在分组内部根据col2排序，相同的数据返回相同排名(连续排序)：122345123...
+            dense_rank() over(
+                partition by coll order by cal2
+            )
+                --关联员工表和部门表，按照部门号分组，每组内按照员工薪水排序，列出员工的部门名字、姓名和薪水
+                    select dense_rank() over(
+                            partition by e.dept_id order by nvl(sal,0) desc
+                        ) "组内编号",
+                        d.name, e.name, e.sal
+                        from EMPLOYEE e, DEPT d
+                        where e.dept_id=d.id;
+
+test5：集合操作
+    两个结果集的结构相同才能进行集合操作
+        结构相同：列的个数、顺序、数据类型都相同--查询项要一一对应相同
+        order by子句要放在最后一个查询语句中或者在最终结果之外
+    1、union合集(去重)
+    2、union all合集(不去重，保留所有)
+    3、intersect交集(共有的)
+    4、minus差集(A-B:A有但B没有)
+        --查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序
+            select sal,name from employee where name like '%曹%'
+                union
+                select sal,name from employee where name like '%刘%' order by sal desc;
+        --查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序（推荐）
+            select a.* from
+                (
+                    select * from employee where name like '%曹%'
+                    union
+                    select * from employee where name like '%刘%'
+                ) a
+                order by a.sal desc;
+
+test6：事务
+        事务控制语言TCL
+    1、commit：事务提交，将所有的数据改变(事务)提交
+        事务指对表数据的增删改查操作（DML）
+        事务提交之前表或行会被锁住，而且其他连接无法查到变化
+    2、rollback：事务回滚，回退到事务之初
+        回滚到上一次提交的时候
+    3、savepoint：事务保存点(不常用)，用于回滚到该保存点时的操作
+        savepoint 保存点名字; --创建保存点
+        rollback to 保存点名字; --回滚到某个保存点时的状态
+            例子：
+                savepoint first;
+                rollback to first;
+
+
+备注：
+1、锁分类：
+	锁行、锁表
+	悲观锁、乐观锁
+	分布式事务、分布式锁
+

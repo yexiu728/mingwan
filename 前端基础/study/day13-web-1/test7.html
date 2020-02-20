@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        .right-info {
+            overflow: hidden;
+        }
+        .right-info,
+        .box {
+            width: 200px;
+            height: 460px;
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+        .box {
+            background: url("images/yys_bg.png") no-repeat left center;
+        }
+        .change {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 110px;
+            cursor: pointer;
+        }
+        .change .arrow {
+            background: url("images/yys_arrow.png");
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 21px;
+            height: 21px;
+        }
+        .change .text {
+            width: 20px;
+            color: #fff;
+            position: absolute;
+            top: 40px;
+            left: 10px;
+            font-size: 20px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="right-info">
+    <div class="box">
+        <div class="change">
+            <div class="arrow"></div>
+            <div class="text">收起</div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var box = document.querySelector(".box");
+    var change = document.querySelector(".box .change");
+    var arrow = document.querySelector(".change .arrow");
+    var text = document.querySelector(".change .text");
+
+    // 默认为展开
+    var flag = true;
+
+    change.onclick = function () {
+
+        /*if(flag) {
+            // 如果为展开
+            box.style.right = "-155px";
+            arrow.style.transform = "rotateY(180deg)";
+            text.innerText = "展开";
+            flag = false;
+        } else {
+            // 如果为收起
+            box.style.right = "0";
+            arrow.style.transform = "rotateY(0deg)";
+            text.innerText = "收起";
+            flag = true;
+        }*/
+
+        // 三元表达式的方式
+        box.style.right = flag ? "-155px" : "0";
+        arrow.style.transform = flag ? "rotateY(180deg)" : "rotateY(0deg)";
+        text.innerText = flag ? "展开" : "收起";
+        flag = !flag;
+
+    };
+
+</script>
+
+</body>
+</html>

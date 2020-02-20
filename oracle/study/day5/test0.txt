@@ -1,0 +1,268 @@
+
+test1：oracle序列
+        是一种用来生成唯一数字值的数据库对象。
+        序列的值由Oracle程序按递增或递减顺序自动生成
+        通常用来自动产生表的主键值
+        一个序列可以为多个表提供主键值
+    1、创建序列
+        create sequence sequence_name   --sequence_name是序列名
+        [ start with i ]                                    --序列的第一个序列值是i
+        [ increment by j ]                              --序列的递增值是j，如果j是正数就递增，如果是负数就递减
+        [ maxvalue m | nomaxvalue ]          --序列可生成的最大值是m或者不设置最大值
+        [ minvalue n | nominvalue ]            --序列可生成的最小值是n或者不设置最小值
+        [ cycle | nocycle ]                              --cycle表示在递增或递减至最值后是否继续循环，默认是nocycle
+        [ cache p | nocache ]                        --先预取p个数据在缓存中，以提高序列值的生成效率，默认是20
+            --创建一个序列，初始值是1000，递增10，最大值是9999
+                create sequence seq_name1
+                start with 1000
+                increment by 10
+                maxvalue 9999;
+    2、查看序列
+        --查看当前用户的序列
+            select * from user_sequences
+        --查看所有用户的序列
+            select * from all_sequences;
+        --获取序列的下个值
+            select seq_name1.nextval from dual;
+        --获取序列的当前值（序列创建后，必须先执行一次nextval ，之后才能使用currval）
+            select seq_name1.currval from dual;
+    3、删除序列
+        drop sequence 序列名
+            --删除序列seq_name1
+                drop sequence seq_name1;
+
+test2：约束 constraint
+        用于确保数据库数据满足特定的商业逻辑或者企业规则，对DML操作有效
+    1、非空约束 not null
+        保证字段值不能为null
+        not null约束只能在列级定义，不能在表级定义
+        --建表时添加非空约束
+            create table NN(
+                ID number(10) not null, --简写方式
+                NAME varchar2(10) constraint nn_name_nn not null, --别名方式
+                AGE number(3)
+            );
+        --建表后添加非空约束
+            alter table NN modify(
+                AGE number(3) not null
+            );
+        --取消非空约束
+            alter table NN modify(
+                AGE number NN null
+            );
+    2、唯一约束 unique
+        用于保证字段或者字段的组合不出现重复值
+        可以使用表级和列级定义
+        --建表时添加唯一约束
+            create table UQ(
+                ID number(10) unique, --列级约束
+                NAME varchar2(10),
+                AGE number(3),
+                constraint uq_name_uq unique(name) --表级约束
+            );
+        --建表后添加唯一约束
+            alter table UQ modify(AGE number(3) unique); --列级约束
+            alter table UQ add constraint uq_age_uq unique(age); --表级约束
+        --删除唯一约束
+            alter table UQ drop constraint uq_age_uq; --表级约束（列级约束需要先查询约束名再删除）
+    3、主键约束 primary key
+        相当于非空(notnull)且唯一(unique)的组合
+        主键字段可以是单字段或多字段组合
+        一个表上只允许建立一个主键
+        主键原则：
+            选择主键应该是对系统无意义的数据列
+            永远也不要更新主键，让主键除了唯一标识一行之外，再无其他的用途
+            主键不应包含动态变化的数据，如时间戳
+            主键应自动生成，不要人为干预，以免使它带有除了唯一标识一行以外的意义
+            主键尽量建立在单列上
+        --建表时添加主键约束
+            create table PK1(
+                ID number(10) primary key --列级约束
+            );
+            create table PK2(
+                ID number(10),
+                constraint pk1_id_pk primary key(ID) --表级约束
+            );
+        --联合主键约束
+            create table PK3(
+                ID number(10),
+                NAME varchar2(10),
+                constraint pk3_id_name_pk primary key(ID,NAME) --联合主键约束只能用表级约束定义
+            );
+        --建表后创建主键约束
+            alter table PK3 modify(ID number(10) primary key); --列级约束
+            alter table PK3 add(constraint pk3_id_pk primary key(id)); --表级约束
+        --删除主键
+            alter table PK3 drop constraint pk3_id_pk; --表级约束
+            alter table PK3 drop primary key; --主键只有一个所以可以
+    4、外键约束 foreign key references
+        外键约束条件定义在两个表的字段或一个表的两个字段上，用于保证相关两个字段的关系
+        外键约束条件包括两个方面的数据约束：
+            从表上定义的外键的列值，必须从主表被参照的列值中选取，或者为NULL；
+            当主表参照列的值被从表参照时，主表的该行记录不允许被删除
+        外键约束对性能的影响
+            如果在一个频繁DML操作的表上建立外键，每次DML操作，
+                都将导致数据库自动对外键所关联的对应表做检查，产生开销。
+            另外外键确定了主从表的先后生成关系，有时会影响业务逻辑
+        --创建class和student表并建立主外键关系
+            create table CLASS(
+            	ID number(11) primary key,
+            	NAME varchar2(20)
+            );
+            create table STUDENT(
+            	SID number(11) primary key,
+            	NAME varchar2(20),
+            	CID number(11),
+            	constraint stu_cid_fk foreign key(CID) references CLASS(ID)
+            );
+    5、检查约束 check
+        强制在字段上的每个值都要满足Check中定义的条件
+        --创建表时添加检查约束
+            create table CK(
+            	ID number check(ID>0 and ID<1000),
+            	NAME varchar2(10),
+            	SEX varchar2(1),
+            	constraint ck_name_ck check(SEX in ('M','F'))
+            );
+        --创建表后添加检查约束
+            alter table CK add(constraint ck_name_ck check(NAME like 'stu%'));
+        --删除检查约束
+            alter table CK drop constraint ck_name_ck;
+
+test3：视图（提升查询效率）
+        视图(view)被称为虚表，是一个虚拟的表
+        视图的本质是对应一条select语句，可以看做是该select语句的快捷方式
+        视图是映射到数据库表的查询语句，当数据库表发生变化时，视图数据也随着发生变化
+    1、创建视图
+        create [or replace] view view_name[(列1 别名,列2 别名...)]
+        as
+        select_statement --查询语句（对应的表称为基表）
+        [with read only] --只读视图（不能执行修改的DML语句，只能查询）
+        [with check option]; --约束视图（结果要符合select_statement语句中where的条件）
+            --创建视图并验证约束视图
+                --1、创建视图
+                create or replace view V_EMP(ID,NAME,SAL)
+                as
+                select ID,NAME,SAL from EMPLOYEE where id=1
+                with check option;
+                --2、验证视图
+                insert into V_EMP values(2,'a',9000); --报错：视图where字句违规
+                update V_EMP set NAME='a2' where ID=1; --正常运行
+    2、查询视图
+        select * from view_name;
+        --查询视图
+            select * from V_EMP;
+    3、删除视图
+        drop view view_name;
+        --删除视图
+            drop view V_EMP;
+
+test4：索引（提升查询效率）
+        查询有索引的列时自动应用其索引
+        索引是一种允许直接访问数据表中某一数据行的树型结构
+        索引记录中存有索引关键字和指向表中数据的指针（地址）
+        对索引进行的I/O操作比对表进行操作要少很多
+        主键或者唯一约束默认有唯一索引(某列任意两行的值都不相同)
+        索引创建不合理时也可能使性能下降
+    1、创建索引
+        create [unique] index index_name
+            on table(column[, column…]);
+        --在employee表的sal列创建索引
+            create index I_EMP on EMPLOYEE(sal);
+    2、修改(重建)索引
+        alter index index_name rebuild;
+        --重建索引
+            alter index I_EMP rebuild;
+    3、删除索引
+        drop index index_emp_xxx;
+        --删除索引
+            drop index I_EMP;
+    4、通过索引提高查询效率
+        为提升查询效率，创建和使用索引的原则：
+        为经常出现在WHERE子句中的列创建索引
+        为经常出现在ORDER BY、DISTINCT后面的字段建立索引。
+        如果建立的是复合索引，索引的字段顺序要和这些关键字后面的字段顺序一致
+        为经常作为表的连接条件的列上创建索引
+        不要在经常做DML操作的表上建立索引
+        一般来说，不需要为比较小的表创建索引
+        限制表上的索引数目，索引并不是越多越好
+        删除很少被使用的、不合理的索引
+
+备注：
+创建与删除
+    create 关键词 名称
+        create table 表名
+        create sequence 序列名
+        create view 视图名 as
+        create index 索引名 on
+        create user 用户名
+        create tablespace 表空间名
+    drop 关键词 名称
+        drop table 表名
+        drop sequence 序列名
+        drop view 视图名
+        drop index 索引名
+
+==================================================
+
+MySQL 安装
+
+0、下载5.7解压版版本
+    https://dev.mysql.com/downloads/mysql/
+
+1、新建my.ini文件
+[client]
+port=3306
+default-character-set=utf8
+[mysqld] 
+# 设置为自己MYSQL的安装目录
+basedir=D:/software/mysql/mysql-5.7
+# 设置为MYSQL的数据目录，不要新建此目录
+datadir=D:/software/mysql/mysql-5.7/data
+port=3306
+#服务id，要保证不与其他MySQL重复
+server-id=111
+log-bin=mysql-bin
+character_set_server=utf8
+sql_mode=NO_ENGINE_SUBSTITUTION,NO_AUTO_CREATE_USER
+#开启查询缓存
+explicit_defaults_for_timestamp=true
+
+2、cmd安装
+    管理员身份进入cmd，进入安装目录下的bin目录
+    初始化my.ini文件：
+        mysqld --initialize-insecure --user=mysql
+    执行安装命令（注意改路径）
+        mysqld install mysql --defaults-file="D:/software/mysql/mysql-5.7/my.ini"
+        注：mysql是服务名称，可修改
+
+3、启动服务
+    启动mysql服务(mysql为前面步骤的服务名称)
+        net start mysql
+    登陆命令
+        mysql -uroot -p
+    修改root密码
+        update mysql.user set authentication_string=password('root') where user='root' and host='localhost';
+    刷新root权限
+        flush privileges;
+
+4、如果失败
+	移除mysql服务：mysqld remove 服务名称
+
+==========
+
+创建数据库
+	create database test;
+查看数据库
+	show databases;
+切换数据库
+	use test;
+创建表
+	create table employee(
+		id int(10),
+		name varchar(20)
+	);
+查看数据库表
+	show tables;
+查看表结构
+	desc test;

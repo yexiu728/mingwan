@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    // 29、打印水仙花数，如：153是一个”水仙花数”，因为153=1的三次方+5的三次方+3的三次方。程序分析：利用for循环控制100-999的数，每个数分解出个位、十位、百位
+
+    // 存储结果的数组
+    var result = [];
+    // 获得水仙花数
+    for(var i = 100; i <= 999; i++) {
+        var ge = i % 10;
+        var shi = parseInt(i / 10) % 10;
+        var bai = parseInt(i / 100);
+
+        var num = Math.pow(ge, 3) + Math.pow(shi, 3) + Math.pow(bai, 3);
+        if(num === i) {
+            result[result.length] = i;
+        }
+    }
+    document.write("水仙花数有：" + result);
+
+</script>
+
+</body>
+</html>

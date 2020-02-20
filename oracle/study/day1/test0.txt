@@ -1,0 +1,138 @@
+
+test1：SQL语言
+    SQL可分为:
+    数据定义语言（DDL） : Data Definition Language
+    数据操纵语言（DML） : Data Manipulation Language
+    事务控制语言（TCL）：Transaction Control Language)
+    数据查询语言（DQL）：Data Query Language
+    数据控制语言（DCL） : Data Control Language
+
+    1.数据定义语言(DDL)
+        用于建立、修改、删除数据库对象，包括创建语句(CREATE)、修改语句(ALTER)、删除语句(DROP)。
+    2.数据操纵语言（DML）
+        用于改变数据库数据，包括INSERT、UPDATE、DELETE三条语句。
+    3.数据查询语言（DQL）
+        用来查询所需要的数据。在工作中使用最多，语法灵活复杂。
+    4.数据控制语言（DCL）
+        用于执行权限的授予和收回操作、创建用户等，包括授予(GRANT)语句，收回(REVOKE)语句，CREATE USER语句
+    5.事务控制语言（TCL）
+        用来维护数据一致性的语句，包括提交(COMMIT)、回滚(ROLLBACK)、保存点(SAVEPOINT)三条语句
+
+test2：SQL语句基础语法
+    SQL 语句是用分号结尾的
+    SQL 语句的大小写不敏感
+    SQL 可以写在一行或者多行
+    关键字不能被缩写也不能分行
+    使用缩进提高语句的可读性
+
+test3：Oracle数据类型
+    1、NUMBER
+        NUMBER表示数字类型，经常被定义成NUMBER（数字的总位数，小数点后面的位数）形式
+            number --任意数字
+            number(2) --数字最长为2
+            number(10,2) --总长度为10，小数位数为2
+    2、CHAR
+        CHAR表示固定长度的字符类型，经常被定义成CHAR（N）形式, N表示占用的字节数，N的最大取值是2000。
+            char(n) --n表示占用的字节数，最大值为2000
+    3、VARCHAR 或者 VARCHAR2
+        VARCHAR2表示变长的字符类型，定义格式是VARCHAR2（N）, N表示最多可占用的字节数，最大长度是4000字节。
+            varchar2(n) --n表示最多占用的字节数，最大值4000
+    4、DATE
+        DATE用于定义日期时间的数据，长度是7个字节，默认格式是：DD-MON-RR, 例如：“11-APR-71”。
+        如果是中文环境，是“11-4月-71”这种形式。
+    5、LONG
+        LONG数据类型可以存放2GB的字符数据，不建议使用，推荐使用CLOB
+            每个表只能有一个LONG类型列：
+                不能作为主键
+                不能建立索引
+                不能出现在查询条件中
+    6、CLOB
+        CLOB用来存储定长或变长字符串，最多达4GB的字符串数据
+
+test4：表操作
+    1、创建表
+        create table student(
+        		id number not null, --not null非空
+        		name varchar(20),
+        		age number,
+        		sex char(1) default 'M' --default默认值
+        );
+        create table employee(
+            empno number(4),
+            ename varchar2(20),
+            job varchar2(20),
+            birth date,
+            sal number(7,2)
+        );
+    2、查看表
+        desc student;
+    3、修改表（表名）
+        rename student to stu;
+    4、删除表
+        drop table stu;
+
+test5：列操作
+    1、添加列
+        alter table stu add(
+            birth date default sysdate --sysdate为当前系统时间
+        );
+        	--查询当前系统时间
+        	--select sysdate from dual; --dual为临时表
+    2、查看列（查看表的所有列）
+        desc stu;
+    3、修改列
+        alter table stu modify(
+            name varchar(30) --改大可以，如果有数据，则不可以改小
+        );
+    4、删除列
+        设置不可用再删除
+            alter table stu set unused column birth;
+            alter table stu drop unused columns;
+        直接删除
+            alter table stu drop(
+                birth
+            );
+
+test6：数据操作(DML)-记得提交commit，未提交时可以回滚rollback
+    1、添加数据
+        insert into employee
+            values(1,'wangjianlin','boss','12-2月-20',2600.23);
+        insert into employee
+            (empno,ename,sal)
+            values(2,'mayun',2500.25); --与列名顺序对应
+        insert into employee
+            (ename,birth)
+            values('张三',to_date('2019-02-12','yyyy-mm-dd'));
+        insert into employee
+            (ename,birth)
+            values('李四',sysdate); --sysdate:系统时间
+    2、查询数据
+        select * from employee where empno=1;
+        select ename as "姓名" from employee; --as:取别名(中文使用双引号)，区别名时as 可以省略
+    3、修改数据
+        update employee set sal=2600.26 where ename='mayun';
+        update employee set sal=2000,job='boss2' where ename='mayun';
+        update employee set sal=3000 where ename='wangjianlin' and empno=1; --and与,or或
+    4、删除数据
+        delete from employee where ename='mayun';
+
+注：创建用户：
+  cmd登录：
+  	sqlplus
+  	用户名：system as sysdba
+  	口令：yexiu
+  创建表空间：(test为表空间名字)
+  	create tablespace test datafile 'F:\app\test.dbf' size 500m;
+  创建用户并指定表空间：(前一个yexiu为用户名，后一个为密码)
+  	create user yexiu identified by yexiu default tablespace test;
+  赋权限：
+  	grant connect,dba to yexiu;
+  切换用户：(用户名/密码)
+  	connect yexiu/yexiu
+
+  查询所有表空间
+  	select tablespace_name from dba_tablespaces;
+  	select tablespace_name from user_tablespaces;
+
+  可以通过navicat连接该用户
+

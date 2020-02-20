@@ -1,0 +1,327 @@
+
+/* 导航栏部分 */
+.header {
+    width: 100%;
+    height: 499px;
+    background: url("../images/bg.jpg") repeat-x;
+}
+.header .nav {
+    height: 75px;
+    margin: 0 auto;
+}
+.header .nav img {
+    height: 44px;
+    margin-top: 16px;
+}
+.header .nav ul {
+    float: right;
+    overflow: hidden;
+    margin-top: 16px;
+}
+.header .nav li {
+    float: left;
+    height: 34px;
+    list-style: none;
+    font-size: 14px;
+    margin-right: 2px;
+    padding-left: 12px;
+}
+.header .nav a {
+    padding-right: 10px;
+    display: inline-block;
+    height: 34px;
+    line-height: 34px;
+}
+.nav li:hover {
+    background: url("../images/hd1.png") no-repeat left;
+}
+.nav li:hover a {
+    background: url("../images/hd1.png") no-repeat right;
+}
+.header .nav .current {
+    background: url("../images/hd.png") no-repeat left;
+}
+.header .nav .current a {
+    background: url("../images/hd.png") no-repeat right;
+}
+
+/* 轮播图部分 */
+.header .slice {
+    margin-top: 45px;
+}
+.header .slice-left h2 {
+    font-size: 26px;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+.header .slice-left p {
+    line-height: 32px;
+    color: #979797;
+}
+.header .slice-left>a {
+    display: block;
+    width: 224px;
+    height: 64px;
+    margin-top: 10px;
+    background: url("../images/btn-1.png") no-repeat center center;
+}
+.header .slice-left>a:hover {
+    background-image: url("../images/btn-2.png");
+}
+.slice-left ul {
+    margin-top: 10px;
+}
+.slice-left ul li {
+    margin-bottom: 5px;
+    padding-left: 14px;
+    position: relative;
+}
+.slice-left ul li:after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: #999;
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    top: 10px;
+}
+.slice-left ul a {
+    color: #609700;
+    font-size: 14px;
+}
+.slice-left ul a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+.slice .slice-right {
+    margin-left: 50px;
+}
+.slice-right .slice-images {
+    width: 490px;
+    height: 350px;
+}
+.slice-right .slice-images li {
+    width: 490px;
+    height: 280px;
+    font-size: 14px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    z-index: 0;
+    transition: all 1s ease;
+}
+.slice-right .slice-images .current {
+    opacity: 1;
+    z-index: 1;
+}
+.slice-right .slice-images img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+.slice-right .slice-images span {
+    text-align: center;
+}
+.slice-right .slice-images a {
+    color: #609700;
+    margin-left: 20px;
+}
+.slice-images li a:first-of-type {
+    margin-left: 0;
+}
+.slice-right .slice-images span a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+.slice-right .slice-spot {
+    width: 78px;
+    height: 26px;
+    margin: 0 auto;
+}
+.slice-right .slice-spot li {
+    width: 26px;
+    height: 26px;
+    float: left;
+    cursor: pointer;
+    background: url("../images/sprice.png") no-repeat -36px -110px;
+}
+.slice-right .slice-spot .current {
+    background-position: -12px -110px;
+}
+
+.slice-right .move-left,
+.slice-right .move-right {
+    position: absolute;
+    bottom: 50%;
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 999;
+    background: url("../images/sprice.png") no-repeat;
+}
+.slice-right .move-left {
+    background-position: -16px -59px;
+    left: 0;
+}
+.slice-right .move-left:hover {
+    background-position: -16px -12px;
+}
+.slice-right .move-right {
+    background-position: -68px -59px;
+    right: 0;
+}
+.slice-right .move-right:hover {
+    background-position: -68px -12px;
+}
+.slice-right:hover .move-left,
+.slice-right:hover .move-right {
+    opacity: 1;
+}
+
+/*  中部*/
+.center {
+    margin-top: 50px;
+    font-size: 14px;
+}
+.center a {
+    color: #609700;
+}
+.center a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+.center .center-left li {
+    float: left;
+    margin-left: 20px;
+}
+.center .center-left li:first-of-type {
+    margin-left: 0;
+}
+.center-left li em {
+    display: block;
+    width: 200px;
+    height: 112px;
+    cursor: pointer;
+    background: url("../images/dn.png") no-repeat;
+}
+.center-list .center-web em {
+    background-position: 0 0;
+}
+.center-left .center-mac em {
+    background-position: -217px 0;
+}
+.center-left .center-windows em {
+    background-position: -436px 0;
+}
+.center-left li div {
+    font-weight: 700;
+    margin-top: 10px;
+}
+.center-left li p {
+    color: #999;
+    line-height: 26px;
+}
+
+.center .center-right {
+    margin-left: 10px;
+}
+.center .center-right>p {
+    font-weight: 700;
+}
+.center .center-right li {
+    padding-left: 8px;
+    line-height: 32px;
+    width: 302px;
+    position: relative;
+}
+.center .center-right li:before {
+    content: "";
+    position: absolute;
+    left: -4px;
+    top: 14px;
+    width: 5px;
+    height: 5px;
+    background-color: #999;
+    border-radius: 3px;
+}
+.center-right li span {
+    float: right;
+    font-size: 11px;
+    color: #999;
+}
+.center .center-right em {
+    color: #f00;
+    font-size: 12px;
+}
+
+.center .center-right div {
+    margin-top: 14px;
+}
+.center-right div p {
+    font-weight: 700;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* 底部 */
+.footer {
+    font-size: 12px;
+    border-top: 1px solid #d4dadf;
+    margin-top: 30px;
+    padding-top: 14px;
+}
+.footer a {
+    color: #888;
+}
+.footer a:hover {
+    text-decoration: underline;
+}
+.footer .footer-left {
+    width: 380px;
+}
+.footer .footer-left ul {
+    width: 100%;
+    margin-bottom: 10px;
+}
+.footer .footer-left li {
+    float: left;
+    padding-left: 10px;
+}
+.footer .footer-left li:after {
+    content: '|';
+    margin-left: 10px;
+    color: #888;
+}
+.footer .footer-left li:last-of-type:after {
+    content: '';
+}
+.footer .footer-left p {
+    display: block;
+    color: #888;
+    margin-left: 10px;
+    margin-bottom: 20px;
+}
+
+
+.footer .footer-right li {
+    float: left;
+    padding-left: 10px;
+}
+.footer .footer-right li {
+    float: left;
+    padding-left: 10px;
+}
+.footer .footer-right li:after {
+    content: '|';
+    margin-left: 10px;
+    color: #888;
+}
+.footer .footer-right li:last-of-type:after {
+    content: '';
+}

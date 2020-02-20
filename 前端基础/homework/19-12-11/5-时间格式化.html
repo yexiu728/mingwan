@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("时间格式化<hr>");
+
+    function formatTime() {
+        var date = new Date();
+        var HH = date.getHours();
+        var MM = date.getMinutes();
+        var SS = date.getSeconds();
+        HH = HH < 10 ? "0"+HH : HH;
+        MM = MM < 10 ? "0"+MM : MM;
+        SS = SS < 10 ? "0"+SS : SS;
+        return HH + ":" + MM + ":" + SS;
+    }
+
+    document.write(formatTime());
+
+</script>
+
+</body>
+</html>

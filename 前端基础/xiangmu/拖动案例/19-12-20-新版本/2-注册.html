@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            /*-webkit-user-select: none; 不选择文字 */
+        }
+        .register {
+            width: 200px;
+            height: 50px;
+            line-height: 50px;
+            margin: 0 auto;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 0 5px 5px orangered;
+            background-color: orangered;
+        }
+        .form {
+            width: 400px;
+            /*height: 220px;*/
+            position: absolute;
+            left: 50%;
+            top: 200px;
+            transform: translateX(-50%);
+            border-radius: 5px;
+            overflow: hidden;
+            box-shadow: 0 0 5px 5px #fff;
+            background: yellowgreen;
+            z-index: 999;
+            display: none;
+        }
+        .form .info {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 700;
+            background: orangered;
+            cursor: move;
+            -webkit-user-select: none;
+        }
+        .form .destroy {
+            width: 50px;
+            height: 50px;
+            line-height: 45px;
+            text-align: center;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 50px;
+            background: blue;
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            right: 0;
+        }
+        .back {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background-color: rgba(0, 0, 0, .8);
+            z-index: 100;
+            display: none;
+        }
+        .form .input div {
+            height: 50px;
+            padding-top: 10px;
+            padding-left: 10px;
+        }
+        .form .input span {
+            width: 100px;
+            height: 50px;
+            display: inline-block;
+        }
+        .form .input i {
+            font-style: normal;
+            font-size: 20px;
+            opacity: 0;
+            color: #f00;
+        }
+        .form .input input {
+            width: 250px;
+            height: 30px;
+            font-size: 16px;
+            padding-left: 5px;
+        }
+        .form .login input {
+            width: 167px;
+            height: 30px;
+            margin-right: 30px;
+        }
+        .form .login input:last-of-type {
+            margin: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div class="back"></div>
+
+<div class="register">注册</div>
+
+<div class="form">
+    <div class="info">填写您的信息</div>
+
+    <div class="input">
+        <div>
+            <span>用户名：</span>
+            <input type="text" name="username" placeholder="请输入用户名">
+            <i>×</i>
+        </div>
+        <div>
+            <span>密码：</span>
+            <input type="password" name="password" placeholder="请输入密码">
+            <i>×</i>
+        </div>
+        <div>
+            <span>确认密码：</span>
+            <input type="password" name="repassword" placeholder="再输一次密码">
+            <i>×</i>
+        </div>
+        <div>
+            <span>电子邮箱：</span>
+            <input type="text" name="email" placeholder="请输入邮箱">
+            <i>×</i>
+        </div>
+        <div>
+            <span>手机号：</span>
+            <input type="text" name="phone" placeholder="请输入手机号">
+            <i>×</i>
+        </div>
+        <div>
+            <span>出生日期：</span>
+            <input type="text" name="birthday" placeholder="格式如 1990-01-01">
+            <i>×</i>
+        </div>
+
+        <div class="login">
+            <input type="button" value="提交" name="submit">
+            <input type="button" value="已有账号-前往登录" name="login">
+        </div>
+    </div>
+
+    <div class="destroy">×</div>
+
+</div>
+
+
+<script>
+
+    // 登录按钮
+    var register = document.querySelector(".register");
+    // 登录表单
+    var form = document.querySelector(".form");
+    // 拖动控件
+    var info = document.querySelector(".info");
+    // 销毁控件
+    var destroy = document.querySelector(".form .destroy");
+    // 背景遮罩层
+    var back = document.querySelector(".back");
+
+    // 表单元素
+    var txts = document.querySelectorAll(".form .input input");
+    // 错误提示
+    var erros = document.querySelectorAll(".form .input i");
+
+    // 提交
+    var submit = txts[6];
+    // 登录
+    var login = txts[7];
+
+    var regUsername = /^[a-zA-Z][a-zA-Z0-9]{3,9}$/;
+    var regPwd = /^[a-zA-Z0-9]{6,20}$/;
+    // regRepwd
+    var regEmail = /^[\w]+[@][\w]+[\.][a-zA-Z]+$/;
+    var regPhone = /^[1][3568][0-9]{9}$/;
+    var regBirth = /^(19[0-9][0-9]|200[0-9])-([1-9]|0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/;
+
+    // 正在匹配验证方法
+    var regular = function () {
+        erros.forEach(function (value) {
+            value.style.opacity = "0";
+            // console.log(value);
+        });
+
+        var username = txts[0].value.trim();
+        var pwd = txts[1].value.trim();
+        var repwd = txts[2].value.trim();
+        var email = txts[3].value.trim();
+        var phone = txts[4].value.trim();
+        var birth = txts[5].value.trim();
+
+        var flag = true;
+        if(!regUsername.test(username)) {
+            flag = false;
+            erros[0].style.opacity = "1";
+        }
+        if(!regPwd.test(pwd)) {
+            flag = false;
+            erros[1].style.opacity = "1";
+        }
+        if(repwd !== pwd || repwd === "") {
+            flag = false;
+            erros[2].style.opacity = "1";
+        }
+        if(!regEmail.test(email)) {
+            flag = false;
+            erros[3].style.opacity = "1";
+        }
+        if(!regPhone.test(phone)) {
+            flag = false;
+            erros[4].style.opacity = "1";
+        }
+        if(!regBirth.test(birth)) {
+            flag = false;
+            erros[5].style.opacity = "1";
+        }
+
+        if(flag) {
+            alert("注册成功");
+            location.href = "success.html";
+        }
+    };
+
+    // 验证
+    submit.onclick = regular;
+
+    // 转到登录
+    login.onclick = function () {
+        location.href = "1-登录.html";
+    };
+
+    // 默认非拖动状态
+    var flag = false;
+
+    // 点击背景层，退出填写
+    back.onclick = function() {
+        form.style.display = "none";
+        back.style.display = "none";
+        flag = false;
+    };
+
+    // 点击销毁
+    destroy.onclick = function() {
+        form.style.display = "none";
+        back.style.display = "none";
+    };
+
+    // 点击显示表单
+    register.onclick = function () {
+        form.style.display = "block";
+        back.style.display = "block";
+        form.style.left = "50%";
+        form.style.top = "200px";
+
+        // 初始化
+        erros.forEach(function (value) {
+            value.style.opacity = "0";
+        });
+    };
+
+    // 左上角坐标
+    var tempX = 0;
+    var tempY = 0;
+
+    // 拖动功能
+    // 判断拖动状态
+    info.onmousedown = function (ev) {
+        flag = true;
+        tempX = ev.clientX - form.offsetLeft;
+        tempY = ev.clientY - form.offsetTop;
+    };
+    document.onmouseup = function () {
+        if(flag) flag = false;
+    };
+
+    // 注册拖动事件
+    document.onmousemove = function (ev) {
+        // 如果不是拖动状态，不执行
+        if(!flag) {
+            return;
+        }
+
+        // 坐标 = 鼠标新坐标 - (初始值：鼠标坐标 - 盒子坐标)
+
+        form.style.left = ev.clientX - tempX + "px";
+        form.style.top = ev.clientY -  tempY + "px";
+
+    };
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            background: url("images/bg.jpg") center top;
+        }
+        .w {
+            width: 540px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .header {
+            margin-top: 50px;
+        }
+        .header h1 {
+            margin-bottom: 20px;
+        }
+        .header div {
+            width: 100px;
+            line-height: 30px;
+            margin: 0 auto;
+            border-radius: 50%;
+            display: inline-block;
+            background: orangered;
+            cursor: pointer;
+            color: #FFF;
+        }
+        .header div:hover {
+            background-color: red;
+        }
+
+        .main {
+            margin-top: 100px;
+            overflow: hidden;
+        }
+        .main ul li {
+            list-style: none;
+            float: left;
+            width: 100px;
+            height: 50px;
+            line-height: 50px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            background-color: blue;
+            cursor: pointer;
+            color: #FFF;
+            font-weight: 700;
+            border-radius: 5px;
+        }
+        .main li:hover {
+            background-color: darkblue;
+        }
+        .main ul li:nth-of-type(5n) {
+            margin-right: 0;
+        }
+        .main ul .current {
+            background: url("images/current.png") no-repeat center center;
+            background-size: 100px 50px;
+            color: #000;
+            font-size: 26px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+            font-size: 12px;
+        }
+        .footer i {
+            font-style: normal;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="header w">
+    <h1>随机点名系统</h1>
+    <div class="start">开始</div>
+    <div class="stop">选定</div>
+</div>
+
+<div class="main w">
+    <ul>
+        <li>蔡青蓝</li>
+        <li>邓姗姗</li>
+        <li>房政</li>
+        <li>黄文雄</li>
+        <li>黄文雄</li>
+        <li>胡毅</li>
+        <li>侯艳杰</li>
+        <li>简俊文</li>
+        <li>李桥坚</li>
+        <li>梁志鸿</li>
+        <li>文豪</li>
+        <li>文豪</li>
+        <li>梁德柱</li>
+        <li>辛振基</li>
+        <li>曹聪</li>
+        <li>罗苑浩</li>
+        <li>张腈杰</li>
+        <li>缪锦链</li>
+        <li>张鹏</li>
+    </ul>
+</div>
+
+<div class="footer">
+    <i>制作人：房政</i>
+    <span>版本号：1.0</span>
+</div>
+
+<script>
+
+    // 开始按钮
+    var start = document.querySelector(".header .start");
+    // 停止按钮
+    var stop = document.querySelector(".header .stop");
+    // 名字列表
+    var names = document.querySelectorAll(".main li");
+    // 记录上次选中的名字索引
+    var index = 0;
+
+    // 记录定时器id
+    var timeId = 0;
+
+    // 是否可以按下停止按钮，默认不可以
+    var flag = false;
+
+    // 定时器方法
+    function go() {
+        // 清除上一个痕迹
+        names[index].className = "";
+        // 获得随机数
+        var temp = Math.floor(Math.random() * names.length);
+        // 如果选到了重复的，继续选，直到和上一次不一样
+        while(temp === index || temp === 2) {
+            temp = Math.floor(Math.random() * names.length);
+        }
+        // 执行到这里，就意味着不会重复
+        index = temp;
+        names[index].className = "current";
+    }
+
+    // 点击开始按钮开始计时
+    start.onclick = function () {
+        // 判断定时器是否正在开启，如果正在开启，则不可重复开启
+        if(!timeId) {
+            flag = true;
+            timeId = setInterval(go, 500);
+
+            // console.log("开始按钮生效");
+        }
+    };
+
+    // 点击停止按钮3 秒后停止计时
+    stop.onclick = function () {
+        // 判断是否可以停止定时器，如果不可以，则不操作
+        if(flag) {
+            flag = false;
+            // 关闭定时器
+            setTimeout(function () {
+                timeId = clearInterval(timeId);
+            }, 3000);
+
+            // console.log("停止按钮生效");
+        }
+
+    };
+
+</script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    // 30、函数封装：已知一对小兔子一个月之后可以变成大兔子，大兔子每个月可以生一对小兔子，以此类推！求到8月能繁殖成多少对？(注：这是不死神兔)
+
+    // 计算兔子数量，time 为月数
+    function getRabbit(time) {
+
+        // 默认有一对小兔子
+        var little = 1;
+        // 默认没有大兔子
+        var big = 0;
+
+        for(var i = 0; i < time; i++) {
+            // 大兔子生出的小兔子
+            var newLittle =big;
+
+            // 小兔子长成的大兔子
+            var newBig = little;
+            // little = 0; // 可省略这一句
+
+            // 统计最终的数据
+            little = newLittle;
+            big += newBig;
+
+            console.log("第 " + (i + 1) + " 个月小兔子数量为：" + little + " 大兔子数量为：" + big);
+        }
+
+        return little + big;
+    }
+
+    var time = 8;
+    document.write(time + " 个月后兔子数量为：" + getRabbit(time) + " 只");
+
+</script>
+
+</body>
+</html>

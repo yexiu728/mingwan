@@ -1,0 +1,143 @@
+
+test1：查询条件
+    1、比较运算符
+        >, <, =
+        !=, <> 不等于
+        >=, <=
+    2、and，or
+        and：且
+        or：或者
+    3、模糊查询（使用like）
+        %：匹配0到多个字符
+            以c开头：c%
+            以c结尾：%c
+            包含c：%c%
+        _：只能匹配1个字符
+    4、in和not in
+        in：在结果集内 in(a,b,c...)
+        not in：不在结果集内 not in(a,b,c...)
+            not in会全局扫描，性能低下
+    5、between n and m
+        在n和m之间，包含n和m
+        可以用于数字类型，也可以用于字符和日期类型
+    6、is null和is not null
+        is null：为空
+        is not null：非空
+    7、any和all
+        any：任意一个 any(a,b,c...)
+        all：全部 all(a,b,c...)
+            使用子查询 select * from employee where sal > any (select sal from employee where job='经理')
+        ALL 和 ANY 不能单独使用，需要配合单行比较操作符 > 、 >= 、 < 、 <= 一起使用
+            > ANY : 大于最小 (大于任意一个)
+            < ANY：小于最大 (小于任意一个)
+            > ALL：大于最大 (比所有值大)
+            < ALL：小于最小 (比所有值小)
+    8、distinct 去重
+    	查询distinct时不要查询其他字段
+            select id,distinct(job) from employee;
+                --会报错
+            select distinct(job),dept_id from employee;
+                --job会出现重复的，因为语句意思是job和dept_id不同时相同
+                --相当于 select distinct job,dept_id from employee;
+
+test2：排序 order by
+    order by前面的条件不能加and
+    desc 降序
+    asc 升序（默认升序）
+        select * from employee where 1=1 order by sal;
+            --单列排序：按照工资升序
+        select * from employee where 1=1 order by sal desc, age asc;
+            --多列排序：按工资降序，如果工资相同，按年龄升序
+
+test3：分组
+    1、group by 分组子句
+        GROUP BY子句表示让指定的列进行分组查询
+    2、having 结果过滤子句（避免使用）
+        where是对表中的数据进行过滤
+        having是对分组后的结果进行过滤
+        必须在group by后面使用，不能单独使用
+    3、查询语句的执行顺序
+        1. .FROM 子句：执行顺序为从后往前、从右到左。数据量较少的表尽量放在后面。
+        2. .WHERE子句：执行顺序为自下而上、从右到左。将能过滤掉最大数量记录的条件写在WHERE 子句的最右。
+        3. .GROUP BY：执行顺序从左往右分组，最好在GROUP BY前使用WHERE将不需要的记录在GROUP BY之前过滤掉。
+        4. .HAVING 子句：消耗资源。尽量避免使用，HAVING 会在检索出所有记录之后才对结果集进行过滤，需要排序等操作。
+        5. .SELECT子句：少用* 号，尽量取字段名称。ORACLE 在解析的过程中, 通过查询数据字典将* 号依次转换成所有的列名, 消耗时间。
+        6. .ORDER BY子句：执行顺序为从左到右排序，消耗资源。
+
+test4：组函数
+    1、max和min
+        max：求最大值
+        min：求最小值
+            select max(sal),min(sal) from employee;
+    2、avg和sum（忽略null）
+        avg：求平均值
+        sum：求和
+        记得使用nvl函数去null值
+            select floor(avg(nvl(sal,0))) from employee;
+            select sum(sal) from employee;
+    3、count 统计个数（忽略null）
+        任意参数都可以
+            select count(1) from employee;
+
+test5：关联查询
+    1、连接查询
+        查询两个或两个以上数据表的查询叫做连接查询
+        连接查询通常建立在存在相互关系的父子表之间
+    2、笛卡尔积
+        笛卡尔积指做关联操作的每个表的每一行都和其它表的每一行做组合
+        假设两个表的记录条数分别是X和Y，笛卡尔积将返回X * Y条记录
+        产生原因:
+            省略连接条件
+            连接条件无效
+            所有表中的所有行互相连接
+            为了避免笛卡尔集， 可以在 WHERE 加入有效的连接条件
+    3、等值连接
+        等值连接是连接查询中最常见的一种
+        通常是在有关联关系的两表间建立等值连接
+            并将连接条件设定为有关联关系的列使用等号”=”连接相关的表
+    4、内连接（等值连接）
+        [inner] join on
+        满足连接条件时左右表才会同时显示出来，不会出现一方为null的现象
+        左右表可以互换，不影响结果集
+            select e.*, d.* from employee e inner join dept d on e.dept_id = d.id;
+    5、左外连接
+        left join on
+        或 left outer join on
+        左表为主：左表的数据都显示出来，对应右表数据没有时补null
+            select e.*, d.* from emp e left join dept d on e.dept_id = d.id;
+    6、右外连接
+        right join on
+        或 right outer join on
+        右表为主：右表的数据都显示出来，对应左表数据没有时补null
+            select e.*, d.* from dept d right join emp e on e.dept_id = d.id;
+    7、全连接
+        full join
+        除了返回两个表中满足连接条件的记录，还会返回不满足连接条件的所有其它行
+            满足连接条件的显示出来
+            左表有右表没有的也显示出来，右表以null补
+            右表有左表没有的也显示出来，左表以null补
+      		    select e.*, d.name from emp e full join dept d on e.dept_id = d.id;
+    8、自连接
+        自连接是通过将表用别名虚拟成两个表的方式实现，可以是等值或不等值连接
+
+备注：
+1、结果集都能使用子查询
+2、驱动表和匹配表
+    inner join 以左边的表为驱动表
+    left outer join 以左边的表为驱动表
+    right outer join 以右边的表为驱动表
+3、外连接的本质是驱动表中的数据一个都不能少
+    左外连接和右外连接合称为外连接
+    左外连接合右外连接可以相互转换
+4、求部门id、部门名称、部门平均工资
+-- select DEPT_ID d_id, avg(nvl(SAL,0)) avg_sal from EMPLOYEE group by DEPT_ID
+select
+	d.ID,
+	d.NAME "部门名称",
+	temp.avg_sal "平均工资"
+from
+	DEPT d,
+	(select DEPT_ID d_id, avg(nvl(SAL,0)) avg_sal from EMPLOYEE group by DEPT_ID) temp
+where
+	d.ID = temp.d_id
+

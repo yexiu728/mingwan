@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("rgb 随机颜色封装<hr>");
+
+    function getRandom(max = 256) {
+        return Math.floor(Math.random() * max);
+    }
+
+    function randomRGBColor() {
+        return "rgb(" + getRandom() + "," + getRandom() + "," + getRandom() + ")";
+    }
+
+    document.write(randomRGBColor());
+
+</script>
+
+</body>
+</html>

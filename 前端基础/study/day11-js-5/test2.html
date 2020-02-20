@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+
+    </style>
+
+</head>
+<body>
+
+<script>
+
+
+    // 生成一副完整的牌
+    function merge() {
+        // 花色
+        var hs = ["♥", "♠", "♦", "♣"];
+        // 牌
+        var ps = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+        // 大王
+        var dw = "🃏";
+        // 小王
+        var xw = "🃏";
+
+        // 牌
+        var pk = [];
+
+        // 组合牌
+        for(var i = 0; i < hs.length; i++) {
+            for(var j = 0; j < ps.length; j++) {
+                pk[pk.length] = hs[i] + "" + ps[j];
+            }
+        }
+        pk[pk.length] = dw;
+        pk[pk.length] = xw;
+
+        return pk;
+    }
+    
+    // 生成指定范围的随机数
+    function getRandom(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min;
+    }
+    
+    // 打乱牌
+    function ranPK(arr = []) {
+        for(var i = 0; i < 100; i++) {
+            var left = getRandom(0, arr.length);
+            var right = getRandom(0, arr.length);
+            var temp = arr[left];
+            arr[left] = arr[right];
+            arr[right] = temp;
+        }
+        return arr;
+    }
+    
+    // 发牌
+    function goPlayer(pk, player1, player2, player3, dizhu) {
+        for(var i = 0; i < pk.length - 3; i += 3) {
+            player1[player1.length] = pk[i];
+            player2[player2.length] = pk[i + 1];
+            player3[player3.length] = pk[i + 2];
+        }
+        dizhu[0] = pk[pk.length - 1];
+        dizhu[1] = pk[pk.length - 2];
+        dizhu[2] = pk[pk.length - 3];
+    }
+
+    /* 给玩家纸牌排序：冒泡排序 */
+    function arraySort(arr = []) {
+        for(var i = 0; i < arr.length; i++) {
+            for(var j = 0; j < arr.length - 1 - i; j++) {
+
+                // 截取牌的字面(非花色)
+                var left = arr[j].slice(1, 2);
+                var right = arr[j + 1].slice(1, 2);
+
+                // 定义每一个牌的代理数字，用于存储牌的大小，相当于权重
+                var leftNum = parseInt(left);
+                var rightNum = parseInt(right);
+
+                // 截取到1，则说明为10，注意A才是真正的1
+                if(leftNum === 1) {
+                    leftNum = 10;
+                }
+                if(rightNum === 1) {
+                    rightNum = 10;
+                }
+
+                // 2的代理数字提升为 32
+                if(leftNum === 2) {
+                    leftNum = 32;
+                }
+                if(rightNum === 2) {
+                    rightNum = 32;
+                }
+
+                // 如果代理数字为非数字，则为A 或 J、Q、K，分别设置对应的代理数字
+                if(isNaN(leftNum)) {
+                    // A的代理数字提升为 31
+                    if(left === "A") {
+                        leftNum = 31;
+                    }
+                    if(left === "J") {
+                        leftNum = 21;
+                    }
+                    if(left === "Q") {
+                        leftNum = 22;
+                    }
+                    if(left === "K") {
+                        leftNum = 23;
+                    }
+                }
+                if(isNaN(rightNum)) {
+                    if(right === "A") {
+                        rightNum = 31;
+                    }
+                    if(right === "J") {
+                        rightNum = 21;
+                    }
+                    if(right === "Q") {
+                        rightNum = 22;
+                    }
+                    if(right === "K") {
+                        rightNum = 23;
+                    }
+                }
+
+                // 默认前面的不比后面大
+                var flag = false;
+
+                // 如果前面的代理数字比后面的代理数字大，则大于
+                if(leftNum > rightNum) {
+                    flag = true;
+
+                    // 如果是大王或小王，则依然为非数字，默认大于
+                } else if(isNaN(leftNum)) {
+                    flag = true;
+                }
+
+                // 如果前面的代理数字比后面的代理数字大，则交换位置，进行排序
+                if(flag) {
+                    var temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // 3名玩家的牌
+    var player1 = [];
+    var player2 = [];
+    var player3 = [];
+    // 地主牌
+    var dizhu = [];
+
+    // 获得一副打乱的牌
+    var pk = ranPK(merge());
+
+    // 发牌
+    goPlayer(pk, player1, player2, player3, dizhu);
+
+    arraySort(player1);
+    arraySort(player2);
+    arraySort(player3);
+    arraySort(dizhu);
+
+    // 打印牌
+    document.write("整副牌：" + pk + "&nbsp;&nbsp;&nbsp;&nbsp;共" + pk.length + "张<br>");
+    document.write("玩家1：" + player1 + "&nbsp;&nbsp;&nbsp;&nbsp;共" + player1.length + "张<br>");
+    document.write("玩家2：" + player2 + "&nbsp;&nbsp;&nbsp;&nbsp;共" + player2.length + "张<br>");
+    document.write("玩家3：" + player3 + "&nbsp;&nbsp;&nbsp;&nbsp;共" + player3.length + "张<br>");
+    document.write("地主牌：" + dizhu + "&nbsp;&nbsp;&nbsp;&nbsp;共" + dizhu.length + "张<br>");
+
+</script>
+
+</body>
+</html>

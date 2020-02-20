@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("请描述下面代码的输出结果以及运行原因<hr>");
+
+    // 1、声明num 变量
+    var num = 1;
+
+    // 2、声明demo 函数，但是此时并没有调用，所以还不执行
+    function demo() {
+        // 4、因为底部num 进行了预解析，所以输出undefined
+        console.log(num);
+
+        // 5、声明demoSon 函数，但是没有调用，所以还不执行
+        function demoSon() {
+            // 8、输出num 为2，因为底部给num 赋值没有使用 var，没有提升到前面，所以不是undefined
+            console.log(num);
+            // 9、给变量num 赋值为3
+            num = 3;
+            // 10、输出变量num，为3
+            console.log(num);
+        }
+
+        // 6、声明变量num 并赋值为2
+        var num = 2;
+        // 7、调用demoSon 函数
+        demoSon();
+    }
+
+    // 3、调用demo 函数
+    demo();
+
+</script>
+
+</body>
+</html>

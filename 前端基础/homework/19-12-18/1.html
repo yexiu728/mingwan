@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .box img {
+            vertical-align: middle;
+        }
+        .box {
+            width: 500px;
+            border: 1px solid #999;
+            padding: 10px;
+            margin: 50px auto 0;
+            position: relative;
+        }
+        .box .textarea {
+            width: 480px;
+            height: 180px;
+            resize: none;
+            overflow: auto;
+            border: 1px solid #999;
+            outline-color: orange;
+            padding: 10px;
+        }
+        .box input[type="button"] {
+            width: 100px;
+            height: 40px;
+            font-size: 18px;
+            color: #fff;
+            background-color: orange;
+            border: 0;
+            outline: none;
+            cursor: pointer;
+            margin: 10px 0 20px;
+            border-radius: 5px;
+        }
+        .info ul li {
+            list-style: none;
+            border-bottom: 1px dotted #999;
+            line-height: 30px;
+            overflow: hidden;
+        }
+        .box li span {
+            display: inline-block;
+            width: 440px;
+            padding-left: 5px;
+            height: 100%;
+        }
+        .box li i {
+            font-style: normal;
+            display: inline-block;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .box .show-emoji {
+            display: inline-block;
+            cursor: pointer;
+        }
+        .box .emoji {
+            position: absolute;
+            width: 192px;
+            top: 160px;
+            left: 140px;
+            display: none;
+            border: 1px solid #999;
+            padding: 5px 10px;
+            border-radius: 10px;
+            background: #FFF;
+        }
+        .box .emoji li {
+            float: left;
+            list-style: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<div class="box">
+
+    <div class="textarea" contenteditable="true"><img src="images/01.gif"></div>
+
+    <div class="send">
+        <input type="button" value="发布">
+
+        <div class="show-emoji">
+            <img src="images/01.gif">
+        </div>
+
+        <div class="emoji">
+            <ul>
+                <li><img src="images/01.gif"></li>
+                <li><img src="images/02.gif"></li>
+                <li><img src="images/03.gif"></li>
+                <li><img src="images/04.gif"></li>
+                <li><img src="images/05.gif"></li>
+                <li><img src="images/06.gif"></li>
+                <li><img src="images/07.gif"></li>
+                <li><img src="images/08.gif"></li>
+                <li><img src="images/09.gif"></li>
+                <li><img src="images/10.gif"></li>
+                <li><img src="images/11.gif"></li>
+                <li><img src="images/12.gif"></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="info">
+        <ul>
+            <li>
+                <span>abcdefg<img src="images/12.gif"></span><i>删除</i>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+    // 发布按钮
+    var sendBtn = document.querySelector(".box input[type='button']");
+    // 输入框
+    var txt = document.querySelector(".box .textarea");
+    // 信息框
+    var info = document.querySelector(".info ul");
+    // 删除键
+    // var delBtn = document.querySelectorAll(".info li i");
+    // 点击显示emoji
+    var showEmoji = document.querySelector(".box .show-emoji");
+    // emoji
+    var emoji = document.querySelector(".box .emoji");
+    // emoji 表情item
+    var emojiItem = document.querySelectorAll(".box .emoji li");
+
+    // 发送表情
+    emojiItem.forEach(function (value) {
+        value.onclick = function () {
+
+            var img = value.innerHTML;
+            txt.innerHTML +=img;
+            emoji.style.display = "none";
+
+            // console.log(txt.innerHTML);
+            // console.log(temp);
+        };
+    });
+
+    // 点击显示emoji
+    showEmoji.onclick = function() {
+        emoji.style.display = (emoji.style.display === "block") ? "none" : "block";
+    };
+
+    // 删除功能 // 点击消息可编辑
+    info.onclick = function (ev) {
+        if(ev.target.nodeName === "I") {
+            info.removeChild(ev.target.parentNode);
+        }
+
+        if(ev.target.nodeName === "SPAN") {
+            // console.dir(ev.target.contentEditable);
+            ev.target.contentEditable = "true";
+            ev.target.focus();
+        }
+    };
+    /*delBtn.forEach(function (value) {
+        value.onclick = function() {
+            value.parentNode.parentNode.removeChild(value.parentNode);
+        };
+    });*/
+
+    // 发布消息函数
+    var send = function () {
+        // 不用innerHTML 以判断文字长度
+        var message = txt.innerText.trim();
+        var messageHtml = txt.innerHTML.trim();
+
+        // 图片换行bug
+
+        // 内容不能为空
+        if(!message && !messageHtml) {
+            alert("内容不能为空");
+            txt.value = "";
+            return;
+        }
+        // 内容长度不能超过120
+        if(message.length > 120) {
+            alert("内容太大");
+            return;
+        }
+        // 添加元素
+        var li = document.createElement("li");
+        var span = document.createElement("span");
+        var i = document.createElement("i");
+
+        span.innerHTML = messageHtml;
+        i.innerText = "删除";
+
+        // 删除功能
+        /*i.onclick = function (ev) {
+            this.parentNode.parentNode.removeChild(this.parentNode);
+        };*/
+
+        li.appendChild(span);
+        li.appendChild(i);
+
+        info.insertBefore(li, info.firstChild);
+
+        txt.innerHTML = "";
+    };
+
+    // 发布功能
+    sendBtn.onclick = send;
+    // 回车发布功能
+    txt.onkeyup = function (ev) {
+        if(ev.ctrlKey && ev.keyCode === 13) {
+            send();
+        }
+    };
+
+</script>
+
+</body>
+</html>

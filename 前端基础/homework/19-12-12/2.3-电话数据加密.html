@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("数据为四位数的整数。加密规则：每位数字都加 上5，然后除以10的余数代替该数字，再将第一位和第四位交换，第二位和第三位交换。传入原文，输出密文<hr>");
+
+    // 传入原始数据
+    function encryption(data) {
+        if(data < 999 || data > 10000) {
+            return false;
+        }
+
+        // 千位数
+        var qian = parseInt(data / 1000);
+        // 百位数
+        var bai = parseInt(data / 100) % 10;
+        // 十位数
+        var shi = parseInt(data / 10) % 10;
+        // 个位数
+        var ge = data % 10;
+        // console.log(qian + ", " + bai + ", " + shi + ", " + ge);
+
+        // 每位数字都加 上5，然后除以10的余数代替该数字
+        qian = (qian + 5) % 10;
+        bai = (bai + 5) % 10;
+        shi = (shi + 5) % 10;
+        ge = (ge + 5) % 10;
+
+        // 再将第一位和第四位交换，第二位和第三位交换
+        var temp = qian;
+        qian = ge;
+        ge = temp;
+
+        temp = bai;
+        bai = shi;
+        shi = temp;
+
+        return parseInt(qian + "" + bai + "" + shi + "" + ge);
+
+    }
+
+    var data = 1234;
+    var result = encryption(data);
+    if(result === false) {
+        document.write("请检查数据是否为四位数");
+    } else {
+        document.write("原数据为：" + data + "，加密数据为：" + result);
+    }
+
+</script>
+
+</body>
+</html>

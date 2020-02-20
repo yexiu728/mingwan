@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<textarea style="resize: none; width: 500px; height: 50px;"></textarea>
+<br>
+<input type="button" class="send" value="发送">
+<input type="button" class="del" value="删除节点">
+<ul>
+    <li>今日天气：🌤</li>
+</ul>
+
+<script>
+    var txt = document.querySelector("textarea");
+    var send = document.querySelector(".send");
+    var del = document.querySelector(".del");
+    var ul = document.querySelector("ul");
+    var lis = document.querySelectorAll("ul li");
+
+    // 发送消息
+    send.onclick = function (ev) {
+        var value = txt.value.trim();
+        // 内容太多
+        if(value.length > 50) {
+            alert("长话短说");
+            return;
+        }
+        // 内容为空
+        if(!value) {
+            alert("不能发送空消息");
+            return;
+        }
+        // 创建并添加点击删除事件
+        var li = document.createElement("li");
+        li.innerText = value;
+        li.onclick = function () {
+            this.parentNode.removeChild(this);
+        };
+        // 插入到页面中
+        ul.insertBefore(li, ul.children[0]);
+
+        txt.value = "";
+    };
+
+    // 删除消息
+    del.onclick = function () {
+        var children = ul.children;
+        if(children.length === 0) {
+            alert("消息已清空");
+            return;
+        }
+
+        ul.removeChild(children[0]);
+    };
+
+    lis.forEach(function (value) {
+        value.onclick = function () {
+            value.parentNode.removeChild(value);
+        }
+    })
+
+</script>
+</body>
+</html>

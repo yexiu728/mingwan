@@ -1,0 +1,63 @@
+/*清除内外边距  */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+img,
+input,
+ul,
+ol,
+dl,
+li,
+dt,
+dd,
+p {
+    margin: 0;
+    padding: 0
+}
+
+/*清除浮动*/
+.clearfix:after {
+    visibility: hidden;
+    clear: both;
+    display: block;
+    content: ".";
+    height: 0
+}
+.clearfix {
+    *zoom: 1
+}
+img {
+    vertical-align: middle;
+}
+a {
+    text-decoration: none;
+}
+li {
+    list-style: none;
+}
+i,
+em {
+    font-style: normal;
+}
+.pr {
+    position: relative;
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+
+.w {
+    width: 1180px;
+    margin: 0 auto;
+}
+
+

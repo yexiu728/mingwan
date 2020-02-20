@@ -1,0 +1,459 @@
+/*清除内外边距  */
+html,
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+img,
+input,
+ul,
+ol,
+dl,
+li,
+dt,
+dd,
+p {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.w {
+    width: 1265px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.top {
+    width: 100%;
+    height: 780px;
+}
+
+.top .top_nav {
+    width: 100%;
+    height: 60px;
+    background: url("../img/header1.jpg") no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.top .top_nav ul {
+    list-style: none;
+    text-decoration: none;
+    width: 1300px;
+    margin: 0 auto;
+}
+
+.top_nav ul li {
+    float: left;
+    width: 100px;
+    line-height: 70px;
+    text-align: center;
+    position: relative;
+}
+
+.top_nav li a:after {
+    content: '';
+    background-color: #FFF;
+    display: inline-block;
+    width: 1px;
+    height: 14px;
+    position: absolute;
+    right: -1px;
+    top: 30px;
+}
+
+.top .top_nav .current {
+    background: url("../img/header_li.jpg") no-repeat;
+}
+
+.top .top_nav .current a:after {
+    content: '';
+    width: 0;
+    height: 0;
+}
+
+.top ul a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.top_nav ul li:hover {
+    background: url("../img/header_li.jpg") no-repeat;
+}
+
+.top_nav ul li:hover a:after {
+    content: '';
+    width: 0;
+    height: 0;
+}
+
+.top .top_banner {
+    width: 100%;
+    height: 784px;
+    position: relative;
+    overflow: hidden;
+}
+
+.top .top_banner div {
+    position: absolute;
+    transition: all 1s;
+    width: 100%;
+    height: 100%;
+}
+
+.top .top_banner img {
+    height: 784px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.top .top_download {
+    width: 100%;
+    height: 240px;
+    position: absolute;
+    top: 545px;
+    left: 0;
+    background:  url("../img/bot_head_bg_450ba6b.png");
+}
+
+.top .top_download .top_left {
+    width: 145px;
+    height: 287px;
+    background: url("../img/index_z_71d3ee9.png") no-repeat 0 5px;
+    position: absolute;
+    top: -47px;
+    left: 0;
+}
+
+.top_download .top_left .top_left_erweima {
+    width: 107px;
+    position: absolute;
+    top: 48px;
+    left: 20px;
+}
+
+.top_download .top_left .top_left_ceshi {
+    width: 107px;
+    height: 47px;
+    position: absolute;
+    top: 170px;
+    left: 20px;
+}
+
+.top_download .top_left .top_left_xiazai {
+    width: 107px;
+    height: 47px;
+    position: absolute;
+    top: 230px;
+    left: 20px;
+}
+
+.top_download .top_left .top_left_saoma {
+    width: 107px;
+    height: 14px;
+    position: absolute;
+    top: 48px;
+    left: 20px;
+    animation: saoma linear 1s infinite alternate;
+}
+
+@keyframes saoma {
+    0% {
+        top: 48px;
+    }
+    100% {
+        top: 140px;
+    }
+}
+
+.top .top_right {
+    width: 1060px;
+    height: 240px;
+    position: absolute;
+    left: 145px;
+}
+
+.top_right .top_up {
+    width: 324px;
+    height: 41px;
+    margin-left: 15px;
+    margin-top: -41px;
+}
+
+.top_right .top_up ul {
+    list-style: none;
+}
+
+.top_right .top_up li {
+    float: left;
+    width: 162px;
+    height: 100%;
+    color: #c2a060;
+    text-align: center;
+    line-height: 41px;
+    background-color: rgba(0, 0, 0, .8);
+    position: relative;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.top_right .top_up span {
+    position: absolute;
+    top: 36px;
+    left: 40px;
+    width: 83px;
+    height: 4px;
+    background: url("../img/index_z_71d3ee9.png") no-repeat -155px -283px;
+}
+
+.top_right .top_up .current {
+    color: #000;
+    background: rgba(0, 0, 0, .8) url("../img/index_z_71d3ee9.png") -958px -235px;
+}
+
+.top_right .top_up .current:hover {
+    background-image: none;
+    color: #c2a060;
+}
+
+.top_right .top_middle {
+    margin-left: 15px;
+    width: 100%;
+    height: 190px;
+}
+
+.top_right .top_middle ul {
+    list-style: none;
+}
+
+.top_right .top_middle li {
+    width: 250px;
+    height: 177px;
+    background-color: white;
+    float: left;
+    margin-top: 14px;
+    margin-right: 14px;
+    box-sizing: border-box;
+    padding: 16px;
+    position: relative;
+}
+
+.top_right .top_middle p {
+    font-weight: 700;
+    font-size: 16px;
+}
+
+.top_right .top_middle div {
+    font-size: 12px;
+    height: 30px;
+    position: absolute;
+    top: 80px;
+    left: 16px;
+    overflow:hidden;
+
+    /* 百度拷贝：显示两行，多余的使用省略号 */
+    display:-webkit-box;
+    text-overflow:ellipsis;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    white-space:normal;
+}
+
+.top_right .top_middle span {
+    width: 41px;
+    height: 5px;
+    background: url("../img/arrow_245be57.png") no-repeat;
+    position: absolute;
+    top: 126px;
+    left: 190px;
+}
+
+.top_right .top_middle li:hover p {
+    color: #c2a060;
+}
+
+.top_right .top_middle li:hover span {
+    animation: jindu ease 300ms 6 alternate;
+}
+
+@keyframes jindu {
+    0% {
+        left: 190px;
+    }
+    100% {
+        left: 180px;
+    }
+}
+
+.top_right .top_down {
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    margin-left: 860px;
+}
+
+.top_right .top_down div {
+    color: #FFF;
+    cursor: pointer;
+    margin-left: 16px;
+    float: left;
+    font-size: 14px;
+}
+.top_right .top_down div:hover {
+    text-decoration: underline;
+}
+
+/* 中部 */
+
+.body {
+    margin-top: 50px;
+    height: 1000px;
+}
+.body .body_shishen {
+    width: 100%;
+    height: 148px;
+}
+.body_shishen .left {
+    width: 56px;
+    height: 148px;
+    float: left;
+    background: url("../img/index_z_71d3ee9.png") no-repeat -980px -296px;
+}
+.body_shishen .center {
+    float: left;
+    margin-left: 50px;
+}
+.body_shishen .center_tab ul {
+    list-style: none;
+    border: 1px solid #c2a060;
+    height: 35px;
+    padding: 2px;
+}
+.body_shishen .center_tab li {
+    float: left;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    text-align: center;
+    position: relative;
+}
+.body_shishen .center_tab li.current {
+    background: #c2a060;
+    color: #FFF;
+}
+.body_shishen .center_tab .slide::before,
+.body_shishen .center_tab .slide::after {
+    content: '';
+    display: inline-block;
+    width: 1px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: -1px;
+    background-color: #c2a060;
+}
+.body_shishen .center_tab .slide:hover:before,
+.body_shishen .center_tab .slide:hover:after {
+    content: '';
+    width: 0;
+    height: 0;
+}
+.body_shishen .center_tab li:hover {
+    background: #c2a060;
+    color: #FFF;
+}
+.body_shishen .center_list {
+    color: #c2a060;
+    margin-top: 20px;
+}
+.body_shishen .center_list span {
+    float: left;
+}
+.body_shishen .center_list div {
+    float: left;
+    margin-left: 10px;
+}
+.body_shishen .right {
+    float: right;
+    border-bottom: 1px solid #c2a060;
+}
+.body_shishen .right input {
+    border: none;
+    width: 160px;
+    height: 23px;
+    outline: none;
+    overflow: hidden;
+}
+.body_shishen .right img {
+    vertical-align: middle;
+}
+
+.body_img {
+    margin-top: 20px;
+    height: 320px;
+}
+.body_img .left,
+.body_img .right {
+    width: 80px;
+    height: 100%;
+    border: 1px solid #c2a060;
+    position: relative;
+    opacity: .5;
+    cursor: pointer;
+    float: left;
+    background: url("../img/shishen_btn_bg_405a749.png") no-repeat center bottom;
+}
+.body_img .left:hover,
+.body_img .right:hover {
+    opacity: 1;
+}
+.body_img .left_message,
+.body_img .right_message {
+    padding: 0 30px;
+    text-align: center;
+    color: #c2a060;
+}
+.body_img .left .left_item {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #c2a060;
+    position: absolute;
+    top: 50%;
+    right: -30px;
+    background: #FFF url("../img/arrow7_81e9fff.png") no-repeat center center;
+}
+.body_img .right .right_item {
+    width: 60px;
+    height: 60px;
+    border: 1px solid #c2a060;
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    background: #FFF url("../img/arrow_245be57.png") no-repeat center center;
+}
+.body_img .center {
+    width: 940px;
+    height: 320px;
+    margin: 0 40px;
+    float: left;
+    background: url("../img/shishen_bg_000bc91.jpg") no-repeat center center;
+    position: relative;
+    z-index: -900;
+}
+.body_img .center img {
+    position: absolute;
+    top: -190px;
+    left: -140px;
+}
+
+
+
+

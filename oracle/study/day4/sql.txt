@@ -1,0 +1,141 @@
+
+select * from EMPLOYEE;
+
+--查询出薪水最高的人的信息
+--1、查询出最高薪水
+select max(nvl(sal,0)) from EMPLOYEE;
+--2、查询出最高薪水的员工的信息
+select * from EMPLOYEE where sal in (select max(nvl(sal,0)) from EMPLOYEE);
+
+--查找和刘备同职位的员工
+--1、查询出刘备的职位
+select job from EMPLOYEE where name='刘备';
+--2、查询出对应的员工
+select * from EMPLOYEE
+	where job=(select job from EMPLOYEE where name='刘备');
+
+--查询出部门中有员工是老板的员工的信息
+--1、查询出职位是员工的员工所在的部门id
+select distinct(DEPT_ID) from EMPLOYEE where job='员工';
+--2、查询出这些部门的员工
+select * from EMPLOYEE
+	where dept_id in (select distinct(DEPT_ID) from EMPLOYEE where job='员工');
+
+--查询比部门平均薪资低的员工信息
+--1、查询出每个部门的id和平均薪资
+select dept_id,avg(nvl(sal,0)) from EMPLOYEE group by dept_id;
+--2、连接查询两张表，比较薪资
+select e.*, a.avgSal "部门平均薪资"
+	from EMPLOYEE e, (select dept_id deptId,avg(nvl(sal,0)) avgSal from EMPLOYEE group by dept_id) a
+	where e.dept_id = a.deptId and nvl(sal,0)<=a.avgSal
+	order by e.dept_id;
+
+--查询有员工的部门
+--1、查询部门并使用exists判断是否有员工与其对应
+select * from DEPT d
+	where exists (select * from EMPLOYEE e where e.dept_id=d.id);
+
+--查询有部门的员工
+--1、查询员工并使用exists判断是否有部门与其对应
+select * from EMPLOYEE e
+	where exists (select * from DEPT d where d.id=e.dept_id);
+
+--查询列出最低薪水比3部门的最低薪水高的部门号
+--1、查询出3号部门的最低薪水
+select min(sal) from EMPLOYEE group by dept_id having dept_id=3;
+--2、查询出最低薪水比1结果高的部门号
+select e.dept_id from EMPLOYEE e
+	group by e.dept_id
+	having min(e.sal)>(select min(sal) from EMPLOYEE group by dept_id having dept_id=3);
+
+--查询员工信息，部门名称
+select e.*, (select d.id,d.name from dept d where e.dept_id=d.id) "部门名称" from EMPLOYEE e;
+
+--伪列
+select rownum, e.* from EMPLOYEE e;
+select rownum, e.* from EMPLOYEE e where rownum>=2; --无数据
+
+--查询第6-10条数据
+--1、将伪列添加到数据集中
+select rownum, e.* from EMPLOYEE e;
+--2、将1的结果集作为临时表来查询，获得第6-10条数据
+select a.*
+	from (select rownum rn, e.* from EMPLOYEE e) a
+	where a.rn between 6 and 10;
+
+--对员工表进行分页，每页显示5条记录，取出第二页的记录
+--1、将rownum加入数据集
+select rownum, e.* from EMPLOYEE e;
+--2、查询第6-10条数据
+select a.*
+	from (select rownum rn, e.* from EMPLOYEE e) a
+	where a.rn between 6 and 10;
+
+--按工资倒序取出第5-10条数据
+--1、查询员工数据按工资倒序
+select e.* from EMPLOYEE e order by nvl(e.sal,0) desc;
+--2、将rownum添加到1的结果集中
+select rownum, a.*
+	from (select e.* from EMPLOYEE e order by nvl(e.sal,0) desc) a;
+--3、取出2结果集中的第5-10条数据
+select *
+	from
+		(select rownum rn, a.*
+			from (select e.* from EMPLOYEE e order by nvl(e.sal,0) desc) a
+		) b
+	where b.rn between 5 and 10;
+
+--查询职员表，根据部门加薪，当部门分别是1、2、3时，加薪金额分别是薪水的1.1倍、1.2倍、1.05倍，否则不加薪
+--1、decode函数形式
+select e.*,
+	decode(e.dept_id, 1, e.sal*1.1, 2, e.sal*1.2, 3, e.sal*1.05, e.sal) "最终薪水"
+	from EMPLOYEE e;
+--2、case when语句形式
+select e.*,
+	case e.dept_id
+		when 1 then e.sal*1.1
+		when 2 then e.sal*1.2
+		when 3 then e.sal*1.05
+		else sal
+		end "最终薪水"
+	from EMPLOYEE e;
+
+--查询员工表，按照部门号分组显示，每组内按员工号排序，并赋予组内编号
+select row_number() over(
+		partition by e.dept_id order by e.id
+	) "组内序号",
+	e.*
+	from EMPLOYEE e;
+
+--查询员工表，按照部门号分组，同组内按薪水倒序排序，并给予组内排序编号
+select rank() over(
+		partition by e.dept_id order by nvl(e.sal,0) desc
+	) "组内编号",
+	e.*
+	from EMPLOYEE e;
+
+--关联员工表和部门表，按照部门号分组，每组内按照员工薪水排序，列出员工的部门名字、姓名和薪水
+select dense_rank() over(
+		partition by e.dept_id order by nvl(sal,0) desc
+	) "组内编号",
+	d.name, e.name, e.sal
+	from EMPLOYEE e, DEPT d
+	where e.dept_id=d.id;
+
+--查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序
+select id,sal,name from employee where name like '%曹%'
+	union
+	select id,sal,name from employee where name like '%刘%' order by sal desc;
+
+--查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序（推荐）
+select a.* from
+	(
+		select * from employee where name like '%曹%'
+		union
+		select * from employee where name like '%刘%'
+	) a
+	order by nvl(sal,0) desc;
+
+
+
+

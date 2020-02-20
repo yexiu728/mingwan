@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    document.write("求100以内所有能被3和7整除的数的和<hr>");
+
+    var sum = 0;
+    for(var i = 1; i <= 100; i++) {
+        if(i % 3 === 0 && i % 7 === 0) {
+            sum += i;
+        }
+    }
+    document.write(sum);
+
+</script>
+
+</body>
+</html>

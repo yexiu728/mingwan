@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .box {
+            margin-top: 100px;
+            margin-left: 100px;
+        }
+        .box ul {
+            overflow: hidden;
+            width: 400px;
+        }
+        .box ul li {
+            float: left;
+            margin-right: 10px;
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+    <div class="emoji">
+        <ul>
+            <li><img src="images/01.gif"></li>
+            <li><img src="images/02.gif"></li>
+            <li><img src="images/03.gif"></li>
+            <li><img src="images/04.gif"></li>
+            <li><img src="images/05.gif"></li>
+            <li><img src="images/06.gif"></li>
+            <li><img src="images/07.gif"></li>
+            <li><img src="images/08.gif"></li>
+            <li><img src="images/09.gif"></li>
+            <li><img src="images/10.gif"></li>
+            <li><img src="images/11.gif"></li>
+            <li><img src="images/12.gif"></li>
+        </ul>
+    </div>
+
+    <div class="message">
+        表情验证官：
+        <ul>
+            <li><img src="images/01.gif"></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    var imgs = document.querySelectorAll(".emoji ul li");
+    var message = document.querySelector(".box .message ul");
+
+    imgs.forEach(function (value) {
+        value.onclick = function () {
+            var img = value.cloneNode(true);
+            message.appendChild(img);
+        };
+    });
+
+    message.onclick = function (e) {
+        if(e.target.nodeName === "IMG") {
+            message.removeChild(e.target.parentNode);
+        }
+    }
+
+</script>
+
+</body>
+</html>

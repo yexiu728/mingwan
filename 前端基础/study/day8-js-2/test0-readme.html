@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<!--
+test1：
+    变量类型：
+        五种基本类型：string、number、boolean、null、undefined
+        一种复杂类型：object
+        字符串string：单引号或者双引号 '' ""
+        数值型number：小数、整数、正负数、NaN:非数字
+        布尔值boolean：true、false
+        未定义undefined：一般报错情况下出现未定义
+        null：一般报错情况下会出现
+            注意：typeof判断类型时，返回值是object，这是js的一个bug
+
+    判断数据类型：typeof
+        typeof 数据
+        typeof(数据)
+
+test2：
+    类型转换：
+        转数值型
+            Number(数据)
+                只能转换纯数字
+            parseInt(数据)
+                不能转小数，也不会四舍五入，只会取小数点前面的数
+                只能转换部分数字（以数字开头）
+            parseFloat(数据)
+                只能转换部分数字（以数字开头）
+
+        转字符串
+            String(数值)
+            数值.toString   不用，因为null、undefined调用时会报错，解析不了
+
+         转Boolean类型
+            Boolean(数值)
+            为假的六种情况
+                false、0、null、undefined、空字符串、NaN
+
+test3：运算符
+    运算符优先级：
+        1、() 括号优先级最高
+        2、一元运算符 ++ -- !
+        3、算数运算符 先 * / % 后+ -
+        4、关系运算符 > >= < <=
+            比较运算符的结果只有两种情况：true、false
+        5、相等运算符 == != === !==
+        6、逻辑运算符 先 && 后 ||
+            && 一假则假
+            || 一真则真
+        7、赋值运算符 =
+    加号隐式转换：字符相连，数值相加 +"100" 相当于Number("100")
+
+test4：分支结构
+    if 三种写法
+        if () {}
+        if() {} else {}
+        if() {} else if() {} else if() {} ... else {}
+    switch case
+        switch(固定值) {
+            case 数值1:
+                执行代码
+                break;
+            case 数值2:
+                执行代码
+                break;
+            default:
+                执行代码
+                break;
+        }
+
+        如果不写break，会出现 case 穿透
+
+test5：for 循环
+    三要素：起点、范围、计数
+        要做的事情
+    for(起点; 范围; 计数) {
+        执行代码
+    }
+
+-->
+
+</body>
+</html>

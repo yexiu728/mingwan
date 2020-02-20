@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .father {
+            width: 300px;
+            height: 300px;
+            background-color: pink;
+            /*margin-top: 50px;*/
+        }
+        .mother {
+            width: 300px;
+            height: 300px;
+            background-color: orange;
+            margin-top: 50px;
+        }
+        .son {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            margin-top: 50px; /* 嵌套元素外边距塌陷 */
+        }
+    </style>
+</head>
+<body>
+
+<div class="father">
+    <div class="son"></div>
+</div>
+<div class="mother"></div>
+
+</body>
+</html>

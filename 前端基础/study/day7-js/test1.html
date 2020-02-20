@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js书写方式</title>
+    <script>
+        /*
+        * js 代码书写的三种方式（一个页面可以有多个script标签，从上往下执行）：
+        *   1、内嵌式
+        *       可以放在网页中的任意位置
+        *       只能用于当前网页 学习阶段这样写
+        *   2、外链式
+        *       创建一个以 .js结尾的文件，使用script标签中的src属性引入
+        *       可以使用于多个网页，开发时这样写
+        *   3、行内式——少用
+        *       对代码量有局限性，代码很厚重，不简洁
+        *   注意：
+        *       外链式和内嵌式同时存在时（内嵌式写在外链标签内），只会执行外链式
+        *       严格区分大小写
+        * */
+
+        // js 注释：
+        // 单行注释 CTRL+/
+        /*
+        * 多行注释
+        * CTRL+shift+/
+        * */
+    </script>
+</head>
+<body>
+
+<input type="button" value="点击" onclick="alert('行内式')">
+
+<script src="js/test1.js"></script>
+<script>
+    alert("内嵌式");
+</script>
+</body>
+</html>

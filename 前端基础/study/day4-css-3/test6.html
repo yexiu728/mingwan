@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .logo {
+            height: 76px;
+            padding-left: 246px;
+            padding-top: 20px;
+            margin-top: 20px;
+        }
+        .logo .logo_img {
+            float: left;
+            height: 100%;
+        }
+        .logo .logo_search {
+            float: left;
+            width: 584px;
+            height: 46px;
+            margin-left: 200px;
+            border: 2px solid #1db69a;
+            position: relative;
+        }
+        .logo .logo_search input[type=text] {
+            width: 478px;
+            height: 46px;
+            border: 0;
+            text-indent: 1em;
+            float: left;
+        }
+        .logo .logo_search input[type=button] {
+            width: 106px;
+            height: 46px;
+            background-color: #1db69a;
+            color: #FFF;
+            font-size: 20px;
+            border: none;
+            float: left;
+        }
+        .logo .logo_search img {
+            width: 23px;
+            height: 23px;
+            position: absolute;
+            right: 120px;
+            top: 10px;
+        }
+
+        .logo .logo_user {
+            float: left;
+            margin-left: 44px;
+        }
+        .logo .logo_user ul {
+            list-style: none;
+        }
+        .logo .logo_user li {
+            float: left;
+            line-height: 46px;
+            margin-right: 16px;
+        }
+        .logo .logo_user li:after {
+            content: "|";
+            margin-left: 16px;
+        }
+        .logo .logo_user .last:after {
+            content: "";
+        }
+        .logo .logo_user .first {
+            padding-left: 40px;
+            background: url("images/id.png") no-repeat left center;
+        }
+        .logo .logo_user .last {
+            padding-left: 40px;
+            background: url("images/download.png") no-repeat left center;
+        }
+
+        .nav {
+            padding-left: 230px;
+            padding-right: 230px;
+            height: 54px;
+            position: relative;
+        }
+        .nav ul {
+            list-style: none;
+        }
+        .nav ul li {
+            float: left;
+            line-height: 52px;
+            text-align: center;
+            width: 67px;
+            margin-left: 10px;
+        }
+        .nav ul li:hover {
+            color: #1db69a;
+            border-bottom: 2px solid #1db69a;
+        }
+        .nav .nav_other {
+            float: right;
+        }
+        .nav img {
+            position: absolute;
+            top: 10px;
+            left: 1220px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="logo">
+    <div class="logo_img">
+        <img src="images/logo.png">
+    </div>
+    <div class="logo_search">
+        <input type="text" placeholder="河山">
+        <input type="button" value="搜索">
+        <img src="images/xiala.png">
+    </div>
+    <div class="logo_user">
+        <ul>
+            <li class="first">立即登录</li>
+            <li>观看记录</li>
+            <li class="last">客户端下载</li>
+        </ul>
+    </div>
+</div>
+
+<div class="nav">
+    <ul>
+        <li>首页</li>
+        <li>电视剧</li>
+        <li>综艺</li>
+        <li>电影</li>
+        <li>儿童</li>
+        <li>动漫</li>
+        <li>小品</li>
+        <li>搞笑</li>
+        <li>娱乐</li>
+        <li>爆点</li>
+        <li>音乐</li>
+        <li>广场舞</li>
+        <li>排行榜</li>
+        <li>快咨询</li>
+    </ul>
+    <ul class="nav_other">
+        <li>体育</li>
+        <li>游戏</li>
+        <li>专题</li>
+    </ul>
+    <img src="images/hot.png">
+</div>
+
+</body>
+</html>

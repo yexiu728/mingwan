@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    /* 第一题 */
+    document.write("1、获取系统时间，根据获取的星期数据，在页面中输出'今天是星期几'，(如：今天是星期六）<br>");
+    var time = new Date().getDay();
+    var week = "";
+    switch (time) {
+        case 0:
+            week = "星期日";
+            break;
+        case 1:
+            week = "星期一";
+            break;
+        case 2:
+            week = "星期二";
+            break;
+        case 3:
+            week = "星期三";
+            break;
+        case 4:
+            week = "星期四";
+            break;
+        case 5:
+            week = "星期五";
+            break;
+        case 6:
+            week = "星期六";
+            break;
+    }
+    document.write("今天是" + week);
+
+    document.write("<hr>");
+
+    /* 第二题 */
+    document.write("2、准备一个数组，存放组员名字，在调用函数的时候可以随机点名<br>");
+    var names = ['蔡青蓝','邓姗姗','房政','黄文雄','胡毅','侯艳杰','简俊文','李桥坚','梁志鸿','文豪','文豪','梁德柱','辛振基','曹聪','罗苑浩'];
+    function getName(names = [""]) {
+        var number = Math.floor(Math.random() * names.length);
+        return names[number];
+    }
+    document.write("组员有：" + names + "<br>");
+    document.write("结果为：" + getName(names));
+
+    document.write("<hr>");
+
+    /* 第三题 */
+    document.write("3、准备一个数组，翻转数组数据，如 [1,2,3,4] 翻转后变成 [4,3,2,1]。<br>");
+    var arr = [1, 2, 3, 4];
+    document.write("原数组为：" + arr + "<br>");
+    for(var i = 0; i < arr.length / 2; i++) {
+        var temp = arr[i];
+        arr[i] = arr[arr.length - 1 - i];
+        arr[arr.length - 1 - i] = temp;
+    }
+    document.write("结果为：" + arr);
+
+    document.write("<hr>");
+
+    /* 第四题 */
+
+    document.write("4. 准备一个数组，求数组中的最大值，如 [1,2,3,4] 的最大值为 4。<br>");
+    var arr2 = [1, 2, 3, 4];
+    document.write("原数组为：" + arr2 + "<br>");
+    var max = arr2[0];
+    for(var i = 1; i < arr2.length; i++) {
+        if(arr2[i] > max) {
+            max = arr2[i];
+        }
+    }
+    document.write("最大值为：" + max);
+
+    document.write("<hr>");
+
+    /* 第五题 */
+
+    document.write("5. 准备一个数组，求数组中的最小值，如 [1,2,3,4] 的最小值为 1。<br>");
+    var arr3 = [1, 2, 3, 4];
+    var min = arr3[0];
+    document.write("原数组为：" + arr3 + "<br>");
+    for(var i = 1; i < arr3.length; i++) {
+        if(arr3[i] < min) {
+            min = arr3[i];
+        }
+    }
+    document.write("最小值为：" + min);
+
+</script>
+
+</body>
+</html>

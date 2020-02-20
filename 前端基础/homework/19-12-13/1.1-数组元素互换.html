@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("将数组的首尾两个元素互换<hr>");
+
+    var arr = ["鹿晗","王俊凯","蔡徐坤","彭于晏","周杰伦","刘德华","赵本山"];
+
+    document.write("原数据：" + arr + "<br>");
+
+    // 提取
+    var last = arr.pop();
+    var first = arr.shift();
+
+    // 添加
+    arr.push(first);
+    arr.unshift(last);
+
+    document.write("结果为：" + arr);
+
+</script>
+
+</body>
+</html>

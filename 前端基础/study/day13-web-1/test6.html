@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        .box img {
+            width: 100%;
+            height: 100%;
+            transition: all 1s linear;
+        }
+        .sports {
+            position: absolute;
+            right: 50%;
+            bottom: 0;
+        }
+        .box .sports li {
+            list-style: none;
+            float: left;
+            width: 10px;
+            height: 10px;
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #000;
+        }
+        .sports li:first-child {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <img src="images/1.webp">
+    <div class="sports">
+        <ul>
+            <li index="1"></li>
+            <li index="2"></li>
+            <li index="3"></li>
+            <li index="4"></li>
+            <li index="5"></li>
+        </ul>
+    </div>
+</div>
+
+<script>
+
+    var img = document.querySelector(".box img");
+    var lis = document.querySelectorAll(".sports li");
+
+    // 注册点击事件
+    for(var i = 0; i < lis.length; i++) {
+        //lis[i].setAttribute("index", (i + 1));
+
+        lis[i].onclick = function (ev) {
+            // 更换图片路径实现图片切换
+            img.src = "images/" + this.getAttribute("index") + ".webp";
+            // 设置底部点的效果
+            for(var j = 0; j < lis.length; j++) {
+                lis[j].style.backgroundColor = "#000";
+            }
+            this.style.backgroundColor = "red";
+        }
+    }
+
+</script>
+
+</body>
+</html>

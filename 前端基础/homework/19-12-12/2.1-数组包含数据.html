@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("判断指定数据是否存在于指定数组中包含<hr>");
+
+    // 判断数组arr 中是否存在数据data
+    function includes(data, arr) {
+        // 默认不存在
+        var flag = false;
+
+        for(var i = 0; i < arr.length; i++) {
+            if(arr[i] == data) {
+                flag = true;
+                break;
+            }
+        }
+
+        return flag;
+    }
+
+    var arr = ["你", "好", "吗", "hallo", "world"];
+    var data = "好";
+    document.write("[ " + data + " ] 包含在 [ " + arr + " ] 中吗？<br>" + (includes(data, arr) === true ? "包含" : "不包含"));
+
+</script>
+
+</body>
+</html>

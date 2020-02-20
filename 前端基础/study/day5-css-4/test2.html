@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        div {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+        }
+        .one {
+            z-index: 2;
+            background-color: pink;
+            top: 10px;
+            left: 10px;
+        }
+        .two {
+            z-index: 3;
+            background-color: purple;
+            top: 20px;
+            left: 20px;
+        }
+        .three {
+            z-index: 1;
+            background-color: red;
+            top: 30px;
+            left: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="one"></div>
+<div class="two"></div>
+<div class="three"></div>
+
+</body>
+</html>

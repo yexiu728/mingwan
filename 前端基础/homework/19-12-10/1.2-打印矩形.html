@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+
+    document.write("使用for循环打印图形<hr>");
+
+    /* 上半部分 */
+    for(var i = 0; i < 5; i++) {
+        for(var j = 0; j < i; j++) {
+            document.write("★");
+        }
+        document.write("⭕");
+
+        for(var k = 0; k < (4-i) * 2; k++) {
+            document.write("★");
+        }
+
+        document.write("⭕");
+
+        for(var z = 0; z < i; z++) {
+            document.write("★");
+        }
+
+        document.write("<br>");
+    }
+
+    /* 下半部分 */
+    for(var i = 0; i < 5; i++) {
+        for(var j = 0; j < 4 - i; j++) {
+            document.write("★");
+        }
+
+        document.write("⭕");
+
+        for(var k = 0; k < i * 2; k++) {
+            document.write("★");
+        }
+
+        document.write("⭕");
+
+        for(var j = 0; j < 4 - i; j++) {
+            document.write("★");
+        }
+
+        document.write("<br>");
+    }
+
+    /* 第二种方法 */
+
+    document.write("<hr>");
+
+    // 行数为10行
+    for(var i = 1; i <= 10; i++) {
+        // 列数为10列
+        for(var j = 1; j <= 10; j++) {
+
+            if(j === i || j === 10-i +1) {
+                // 如果 j 为 1,2,3... 或者 10,9,8... 位置的时候输出圈
+                document.write("⭕");
+            } else {
+                // 其他则输出星
+                document.write("★");
+            }
+        }
+        // 换行
+        document.write("<br>");
+    }
+
+</script>
+
+</body>
+</html>

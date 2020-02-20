@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1>day1：数据库类型、DDL语句</h1>
+<pre>
+
+test1：SQL语言
+    SQL可分为:
+    数据定义语言（DDL） : Data Definition Language
+    数据操纵语言（DML） : Data Manipulation Language
+    事务控制语言（TCL）：Transaction Control Language)
+    数据查询语言（DQL）：Data Query Language
+    数据控制语言（DCL） : Data Control Language
+
+    1.数据定义语言(DDL)
+        用于建立、修改、删除数据库对象，包括创建语句(CREATE)、修改语句(ALTER)、删除语句(DROP)。
+    2.数据操纵语言（DML）
+        用于改变数据库数据，包括INSERT、UPDATE、DELETE三条语句。
+    3.数据查询语言（DQL）
+        用来查询所需要的数据。在工作中使用最多，语法灵活复杂。
+    4.数据控制语言（DCL）
+        用于执行权限的授予和收回操作、创建用户等，包括授予(GRANT)语句，收回(REVOKE)语句，CREATE USER语句
+    5.事务控制语言（TCL）
+        用来维护数据一致性的语句，包括提交(COMMIT)、回滚(ROLLBACK)、保存点(SAVEPOINT)三条语句
+
+test2：SQL语句基础语法
+    SQL 语句是用分号结尾的
+    SQL 语句的大小写不敏感
+    SQL 可以写在一行或者多行
+    关键字不能被缩写也不能分行
+    使用缩进提高语句的可读性
+
+test3：Oracle数据类型
+    1、NUMBER
+        NUMBER表示数字类型，经常被定义成NUMBER（数字的总位数，小数点后面的位数）形式
+            number --任意数字
+            number(2) --数字最长为2
+            number(10,2) --总长度为10，小数位数为2
+    2、CHAR
+        CHAR表示固定长度的字符类型，经常被定义成CHAR（N）形式, N表示占用的字节数，N的最大取值是2000。
+            char(n) --n表示占用的字节数，最大值为2000
+    3、VARCHAR 或者 VARCHAR2
+        VARCHAR2表示变长的字符类型，定义格式是VARCHAR2（N）, N表示最多可占用的字节数，最大长度是4000字节。
+            varchar2(n) --n表示最多占用的字节数，最大值4000
+    4、DATE
+        DATE用于定义日期时间的数据，长度是7个字节，默认格式是：DD-MON-RR, 例如：“11-APR-71”。
+        如果是中文环境，是“11-4月-71”这种形式。
+    5、LONG
+        LONG数据类型可以存放2GB的字符数据，不建议使用，推荐使用CLOB
+            每个表只能有一个LONG类型列：
+                不能作为主键
+                不能建立索引
+                不能出现在查询条件中
+    6、CLOB
+        CLOB用来存储定长或变长字符串，最多达4GB的字符串数据
+
+test4：表操作
+    1、创建表
+        create table student(
+        		id number not null, --not null非空
+        		name varchar(20),
+        		age number,
+        		sex char(1) default 'M' --default默认值
+        );
+        create table employee(
+            empno number(4),
+            ename varchar2(20),
+            job varchar2(20),
+            birth date,
+            sal number(7,2)
+        );
+    2、查看表
+        desc student;
+    3、修改表（表名）
+        rename student to stu;
+    4、删除表
+        drop table stu;
+
+test5：列操作
+    1、添加列
+        alter table stu add(
+            birth date default sysdate --sysdate为当前系统时间
+        );
+        	--查询当前系统时间
+        	--select sysdate from dual; --dual为临时表
+    2、查看列（查看表的所有列）
+        desc stu;
+    3、修改列
+        alter table stu modify(
+            name varchar(30) --改大可以，如果有数据，则不可以改小
+        );
+    4、删除列
+        设置不可用再删除
+            alter table stu set unused column birth;
+            alter table stu drop unused columns;
+        直接删除
+            alter table stu drop(
+                birth
+            );
+
+test6：数据操作(DML)-记得提交commit，未提交时可以回滚rollback
+    1、添加数据
+        insert into employee
+            values(1,'wangjianlin','boss','12-2月-20',2600.23);
+        insert into employee
+            (empno,ename,sal)
+            values(2,'mayun',2500.25); --与列名顺序对应
+        insert into employee
+            (ename,birth)
+            values('张三',to_date('2019-02-12','yyyy-mm-dd'));
+        insert into employee
+            (ename,birth)
+            values('李四',sysdate); --sysdate:系统时间
+    2、查询数据
+        select * from employee where empno=1;
+        select ename as "姓名" from employee; --as:取别名(中文使用双引号)，区别名时as 可以省略
+    3、修改数据
+        update employee set sal=2600.26 where ename='mayun';
+        update employee set sal=2000,job='boss2' where ename='mayun';
+        update employee set sal=3000 where ename='wangjianlin' and empno=1; --and与,or或
+    4、删除数据
+        delete from employee where ename='mayun';
+
+注：创建用户：
+  cmd登录：
+  	sqlplus
+  	用户名：system as sysdba
+  	口令：yexiu
+  创建表空间：(test为表空间名字)
+  	create tablespace test datafile 'F:\app\test.dbf' size 500m;
+  创建用户并指定表空间：(前一个yexiu为用户名，后一个为密码)
+  	create user yexiu identified by yexiu default tablespace test;
+  赋权限：
+  	grant connect,dba to yexiu;
+  切换用户：(用户名/密码)
+  	connect yexiu/yexiu
+
+  查询所有表空间
+  	select tablespace_name from dba_tablespaces;
+  	select tablespace_name from user_tablespaces;
+
+  可以通过navicat连接该用户
+
+</pre>
+
+<h1>day2：SQL函数</h1>
+<pre>
+test1：SQL函数(单行函数)
+    1、大小写控制函数
+        upper
+            UPPER(char) 用于将字符转换为大写形式
+        lower
+            LOWER(char) 用于将字符转换为小写形式
+        initcap
+            INITCAP(char) 用于将字符串中每个单词的首字符大写，其它字符小写。
+                单词之间用空格和非字母字符分隔
+    2、字符控制函数
+        length
+            LENGTH(char) 用于返回参数字符串的长度。
+                如果字符类型是VARCHAR2，返回字符的实际长度(字符个数)，
+                如果字符类型是CHAR，长度还包括后补的空格。
+        concat 和 ||
+            CONCAT(char1, char2) 用于返回两个字符串连接后的结果。
+                两个参数char1、char2是要连接的两个字符串。
+            char1 || char2 || char3 拼接多个字符串
+                不建议使用，建议使用多个concat来实现：concat(concat(char1, char2), char3)
+        trim
+            TRIM(c2 FROM c1) 把c1前后的c2截去
+        ltrim
+            LTRIM(c1[, c2]) 把c1左边(left)的c2截去
+        rtrim
+            RTRIM(c1[, c2]) 把c1右边(right)的c2截去
+        lpad
+            LPAD(char1, n, char2) 左补位函数
+                在char1左边补多个char2，直到char1长度为n
+        rpad
+            RPAD(char1, n, char2) 右补位函数
+                在char1右边补多个char2，直到char1长度为n
+        substr
+            SUBSTR(char, [m[, n]]) 返回char中从m位开始取n个字符的子串
+                字符串的首位计数从1开始
+                如果m = 0，则从首字符开始，如果m取负数，则从尾部开始
+                如果没有设置n，或者n的长度超过了char的长度，则取到字符串末尾为止
+        instr
+            INSTR(char1, char2[, m [, n]]) 返回在一个字符串中子串的位置
+                返回子串char2在源字符串char1中的位置
+                从m的位置开始搜索，没有指定m，从第1个字符开始搜索
+                n用于指定子串的第n次出现次数，如果不指定取值1
+                如果在char1中没有找到子串char2 ，返回0
+    3、数值操作函数
+        round
+            ROUND(n[, m]) 用于将参数n按照m的数字要求四舍五入
+                m必须是整数
+                m取正数则四舍五入到小数点后第m位
+                m取负数，则四舍五入到小数点前m位
+                m取0值则四舍五入到整数位
+                m缺省，默认值是0
+        trunc
+            TRUNC(n[, m])的功能是截取
+                其中n和m的定义和ROUND(n[, m])相同，
+                不同的是功能上按照截取的方式处理数字n，即截取后空位由0补上
+        mod
+            MOD(m, n)是取模函数，返回m除以n后的余数，如果n为0则直接返回m。
+        ceil
+            CEIL(n) 向上取整
+        floor
+            FLOOR(n) 向下取整
+    4、日期转换函数
+        to_date
+            TO_DATE(char[, fmt]) 将字符串按照定制格式转换为日期类型
+                char是要转换的字符串，fmt是转换格式
+                yyyy-mm-dd hh24:mi:ss day
+                day：周几
+        to_char
+            TO_CHAR(日期数据 , 格式) 把日期数据转换为字符数据，常用于格式化显示日期数据
+                SELECT TO_CHAR(SYSDATE, 'yyyy-mm-dd hh24:mi:ss day') "时间" FROM dual;
+                --> 2020-02-13 17:06:44 星期四
+    5、日期常用函数
+        months_between
+            MONTHS_BETWEEN(date1, date2) date1与date2相差的月份数
+                SELECT ROUND(MONTHS_BETWEEN(SYSDATE, TO_DATE('2019-12','yyyy-mm')), 1) "相隔(月)" FROM DUAL;
+        add_months
+            ADD_MONTHS(date, i) 返回日期date加上i个月后的日期值
+                参数i可以是任何数字，大部分时候取正值整数
+                如果i是小数，将会被截取整数后再参与运算
+                如果i是负数，则获得的是减去i个月后的日期值
+        last_day
+            LAST_DAY(date) 返回日期date所在月的最后一天
+        next_day
+            NEXT_DAY(date, char) 返回date日期的下一个周几的时间，周几是由参数char来决定的
+                在中文环境下，直接使用”星期三”这种形式，英文环境下，需要使用”WEDNESDAY”这种英文的周几。
+                为避免麻烦，可以直接用数字1-7表示周日-周六
+        least 和greatest
+            LEAST(expr1[, expr2[, expr3]]…) 参数列表中的最小值
+            GREATEST(expr1[, expr2[, expr3]]…) 参数列表中的最大值
+                两个函数都可以有多个参数值，但参数类型必须一致
+                LEAST和GREATEST是可以比较字符串日期的
+        extract
+            EXTRACT(date FROM datetime) 从参数datetime中提取参数date指定的数据，比如提取年、月、日
+                SELECT EXTRACT(YEAR FROM SYSDATE) current_year FROM DUAL;
+
+test2：日期
+    1、date
+        DATE类型的数据可以显示到年月日，也可以显示到年月日时分秒，主要看存储数据的精确度
+            存储年月日只显示年月日
+            没有存时分秒，或者时分秒位00:00:00，也都只显示年月日
+            存储年月日时分秒才会显示年月日时分秒
+    2、timestamp
+        TIMESTAMP表示时间戳，与DATE的区别是不仅可以保存日期和时间，还能保存小数秒，最高精度可以到ns(纳秒)级别
+    3、sysdate
+        SYSDATE 本质是一个Oracle的内部函数，用来返回当前的系统时间，精确到秒
+            默认显示格式是 DD-MON-RR ，只有年月日并不显示时分秒
+            SELECT TO_CHAR(SYSDATE,'yyyy-mm-dd day hh24:mi:ss') FROM DUAL;
+    4、systimestamp
+        SYSTIMESTAMP 也是Oracle的内部日期函数，返回当前系统日期和时间，精确到毫秒
+            SELECT TO_CHAR(SYSTIMESTAMP ,'yyyy-mm-dd hh24:mi:ss:ff3') FROM DUAL;
+
+test3：null
+    NULL是数据库里的重要概念，即空值。
+    空值空值不是空格或者0，是无效的，未指定的，未知的值。
+    当表中的某些字段值，数据未知或暂时不存在，取值NULL。
+    在数据库中，任何数据类型均可取值NULL。
+
+test4：空值函数
+    1、nvl
+        NVL(expr1, expr2) ：将 NULL 转变为非 NULL 值
+            如果 expr1 为 NULL ，则取值 expr2（expr2 是非空值）
+    2、nvl2
+        NVL2(expr1, expr2, expr3) ：和NVL函数功能类似，都是将NULL转变为非空值
+            判断expr1是否为NULL，如果不是NULL，返回expr2，如果是NULL，返回expr3。
+
+备注：
+    Oracle不区分大小写：
+    	Oracle语句不区分大小写，但是数据区分大小写
+
+</pre>
+
+<h1>day3：模糊查询、排序、分组、关联查询</h1>
+<pre>
+
+test1：查询条件
+    1、比较运算符
+        >, <, =
+        !=, <> 不等于
+        >=, <=
+    2、and，or
+        and：且
+        or：或者
+    3、模糊查询（使用like）
+        %：匹配0到多个字符
+            以c开头：c%
+            以c结尾：%c
+            包含c：%c%
+        _：只能匹配1个字符
+    4、in和not in
+        in：在结果集内 in(a,b,c...)
+        not in：不在结果集内 not in(a,b,c...)
+            not in会全局扫描，性能低下
+    5、between n and m
+        在n和m之间，包含n和m
+        可以用于数字类型，也可以用于字符和日期类型
+    6、is null和is not null
+        is null：为空
+        is not null：非空
+    7、any和all
+        any：任意一个 any(a,b,c...)
+        all：全部 all(a,b,c...)
+            使用子查询 select * from employee where sal > any (select sal from employee where job='经理')
+        ALL 和 ANY 不能单独使用，需要配合单行比较操作符 > 、 >= 、 < 、 <= 一起使用
+            > ANY : 大于最小 (大于任意一个)
+            < ANY：小于最大 (小于任意一个)
+            > ALL：大于最大 (比所有值大)
+            < ALL：小于最小 (比所有值小)
+    8、distinct 去重
+    	查询distinct时不要查询其他字段
+            select id,distinct(job) from employee;
+                --会报错
+            select distinct(job),dept_id from employee;
+                --job会出现重复的，因为语句意思是job和dept_id不同时相同
+                --相当于 select distinct job,dept_id from employee;
+
+test2：排序 order by
+    order by前面的条件不能加and
+    desc 降序
+    asc 升序（默认升序）
+        select * from employee where 1=1 order by sal;
+            --单列排序：按照工资升序
+        select * from employee where 1=1 order by sal desc, age asc;
+            --多列排序：按工资降序，如果工资相同，按年龄升序
+
+test3：分组
+    1、group by 分组子句
+        GROUP BY子句表示让指定的列进行分组查询
+    2、having 结果过滤子句（避免使用）
+        where是对表中的数据进行过滤
+        having是对分组后的结果进行过滤
+        必须在group by后面使用，不能单独使用
+    3、查询语句的执行顺序
+        1. .FROM 子句：执行顺序为从后往前、从右到左。数据量较少的表尽量放在后面。
+        2. .WHERE子句：执行顺序为自下而上、从右到左。将能过滤掉最大数量记录的条件写在WHERE 子句的最右。
+        3. .GROUP BY：执行顺序从左往右分组，最好在GROUP BY前使用WHERE将不需要的记录在GROUP BY之前过滤掉。
+        4. .HAVING 子句：消耗资源。尽量避免使用，HAVING 会在检索出所有记录之后才对结果集进行过滤，需要排序等操作。
+        5. .SELECT子句：少用* 号，尽量取字段名称。ORACLE 在解析的过程中, 通过查询数据字典将* 号依次转换成所有的列名, 消耗时间。
+        6. .ORDER BY子句：执行顺序为从左到右排序，消耗资源。
+
+test4：组函数
+    1、max和min
+        max：求最大值
+        min：求最小值
+            select max(sal),min(sal) from employee;
+    2、avg和sum（忽略null）
+        avg：求平均值
+        sum：求和
+        记得使用nvl函数去null值
+            select floor(avg(nvl(sal,0))) from employee;
+            select sum(sal) from employee;
+    3、count 统计个数（忽略null）
+        任意参数都可以
+            select count(1) from employee;
+
+test5：关联查询
+    1、连接查询
+        查询两个或两个以上数据表的查询叫做连接查询
+        连接查询通常建立在存在相互关系的父子表之间
+    2、笛卡尔积
+        笛卡尔积指做关联操作的每个表的每一行都和其它表的每一行做组合
+        假设两个表的记录条数分别是X和Y，笛卡尔积将返回X * Y条记录
+        产生原因:
+            省略连接条件
+            连接条件无效
+            所有表中的所有行互相连接
+            为了避免笛卡尔集， 可以在 WHERE 加入有效的连接条件
+    3、等值连接
+        等值连接是连接查询中最常见的一种
+        通常是在有关联关系的两表间建立等值连接
+            并将连接条件设定为有关联关系的列使用等号”=”连接相关的表
+    4、内连接（等值连接）
+        [inner] join on
+        满足连接条件时左右表才会同时显示出来，不会出现一方为null的现象
+        左右表可以互换，不影响结果集
+            select e.*, d.* from employee e inner join dept d on e.dept_id = d.id;
+    5、左外连接
+        left join on
+        或 left outer join on
+        左表为主：左表的数据都显示出来，对应右表数据没有时补null
+            select e.*, d.* from emp e left join dept d on e.dept_id = d.id;
+    6、右外连接
+        right join on
+        或 right outer join on
+        右表为主：右表的数据都显示出来，对应左表数据没有时补null
+            select e.*, d.* from dept d right join emp e on e.dept_id = d.id;
+    7、全连接
+        full join
+        除了返回两个表中满足连接条件的记录，还会返回不满足连接条件的所有其它行
+            满足连接条件的显示出来
+            左表有右表没有的也显示出来，右表以null补
+            右表有左表没有的也显示出来，左表以null补
+      		    select e.*, d.name from emp e full join dept d on e.dept_id = d.id;
+    8、自连接
+        自连接是通过将表用别名虚拟成两个表的方式实现，可以是等值或不等值连接
+
+备注：
+1、结果集都能使用子查询
+2、驱动表和匹配表
+    inner join 以左边的表为驱动表
+    left outer join 以左边的表为驱动表
+    right outer join 以右边的表为驱动表
+3、外连接的本质是驱动表中的数据一个都不能少
+    左外连接和右外连接合称为外连接
+    左外连接合右外连接可以相互转换
+4、求部门id、部门名称、部门平均工资
+-- select DEPT_ID d_id, avg(nvl(SAL,0)) avg_sal from EMPLOYEE group by DEPT_ID
+select
+	d.ID,
+	d.NAME "部门名称",
+	temp.avg_sal "平均工资"
+from
+	DEPT d,
+	(select DEPT_ID d_id, avg(nvl(SAL,0)) avg_sal from EMPLOYEE group by DEPT_ID) temp
+where
+	d.ID = temp.d_id
+
+</pre>
+
+<h1>day4：子查询、分页查询、case when、分组排序、集合、事务</h1>
+<pre>
+
+test1：子查询
+        行：子查询返回单行数据则为单行，多行数据则为多行
+        列：表的数量(包括临时表)为一张则为单列，多张表则为多列
+    1、多行单列子查询
+        子查询返回多行，主查询中要使用多行比较操作符，包括IN、ALL、ANY
+        其中ALL和ANY不能单独使用，需要配合单行比较操作符>、>=、<、<=一起使用
+            --查询出部门中有职位是员工的员工的信息
+                select * from EMPLOYEE
+                    where dept_id in (select distinct(DEPT_ID) from EMPLOYEE where job='员工');
+    2、多行多列子查询
+        在查询语句中，FROM子句用来指定要查询的表。
+        如果要在一个子查询的结果中继续查询，则子查询出现在FROM 子句中，
+        这个子查询可以理解为临时表，只能在当前的SQL语句中有效
+            --查询比部门平均薪资低的员工信息
+                select e.*, a.avgSal "部门平均薪资"
+                    from EMPLOYEE e, (select dept_id deptId,avg(nvl(sal,0)) avgSal from EMPLOYEE group by dept_id) a
+                    where e.dept_id = a.deptId and nvl(sal,0)<=a.avgSal
+                    order by e.dept_id;
+    3、exists：判断子查询有没有数据返回 , 有则为 true, 没有则为 false
+        sql 执行顺序从主查询开始 , 把主查询中的数据传入子查询 ,作为条件中的参数
+        如果返回true则把该条记录拿出来，false则过滤掉该条记录
+            --查询有员工的部门
+                select * from DEPT d
+                    where exists (select * from EMPLOYEE e where e.dept_id=d.id);
+            --查询有部门的员工
+                select * from EMPLOYEE e
+                    where exists (select * from DEPT d where d.id=e.dept_id);
+    4、where子句中的子查询
+            单行单列子查询
+                --查询出薪水最高的人的信息
+                    select * from EMPLOYEE where sal in (select max(nvl(sal,0)) from EMPLOYEE);
+                ----查找和刘备同职位的员工
+                    select * from EMPLOYEE
+                        where job=(select job from EMPLOYEE where name='刘备');
+    5、having子句中的子查询
+        having即在group by中使用，不能单独使用的having
+            --查询列出最低薪水比3部门的最低薪水高的部门号
+                select e.dept_id from EMPLOYEE e
+                    group by e.dept_id
+                    having min(e.sal)>(select min(sal) from EMPLOYEE group by dept_id having dept_id=3);
+	6、select子句中的子查询
+        把子查询放在select子句部分，是连接查询的另一种表现形式
+        注意：每行结果对应子查询结果集只能有一行数据，否则无法容纳，显示报错
+            --查询员工信息，部门名称
+                select e.*, (select d.name from dept d where e.dept_id=d.id) "部门名称" from EMPLOYEE e;
+
+test2：分页查询
+    1、rownum 伪列
+        是对结果集加的标识行数据顺序的数字列(强调：先要有结果集)
+        伪列的操作类似于表中的列，但是它并不存实际保存在表中
+        可以对其进行查询操作，但是不能对其进行增加、修改或者是删除
+            select rownum, e.* from EMPLOYEE e;
+        总是从1开始排起的,不能从结果集中直接截取
+            --反例：结果为空，无数据
+                select rownum, e.* from EMPLOYEE e where rownum>=2;
+        如果利用ROWNUM截取结果集中的部分数据，需要先将ROWNUM查出作为临时表的一个列
+            --查询第6-10条数据
+                select a.*
+                    from (select rownum rn, e.* from EMPLOYEE e) a
+                    where a.rn between 6 and 10;
+    2、子查询实现分页
+        在ORACLE中利用ROWNUM的功能来进行分页
+            // 每页显示的数据的条数
+            int pageSize;
+                自定义
+            // 总记录数
+            int count;
+                select count(1) from employee;
+            // 总页数
+            int pageTotal;
+                pageTotal = count%pageSize==0?(count/pageSize) : (count/pageSize+1)
+                或者pageTotal = (count-1)/pageSize+1
+                    注意第二个公式count >= 1
+            // 分页数据序号区间
+               	int page;
+               	    page = (n - 1) * pageSize + 1 至 n * pageSize
+            --对员工表进行分页，每页显示10条记录，取出第二页的记录
+                select a.*
+                	from (select rownum rn, e.* from EMPLOYEE e) a
+                	where a.rn between 11 and 20;
+    3、分页与order by
+        需要先将数据排序后再加上rownum(如果在同一子句中会先加伪列才排序)，最后分页
+            --按工资倒序取出第5-10条数据
+                select *
+                    from
+                        (select rownum rn, a.*
+                            from (select e.* from EMPLOYEE e order by nvl(e.sal,0) desc) a
+                        ) b
+                    where b.rn between 5 and 10;
+
+test3：decode函数与case when
+        类似java的 switch case 语句，结果为一个字段，用在select语句中
+    1、decode函数
+        decode(判断字段 , 匹配 1 , 值 1 , 匹配 2 , 值 2 , … , 默认值)
+            --查询职员表，根据部门加薪，当部门分别是1、2、3时，加薪金额分别是薪水的1.1倍、1.2倍、1.05倍，否则不加薪
+                select e.*,
+                    decode(e.dept_id, 1, e.sal*1.1, 2, e.sal*1.2, 3, e.sal*1.05, e.sal) "最终薪水"
+                    from EMPLOYEE e;
+    2、case when语句
+        case 判断条件
+            when 匹配1 then 值1
+            when 匹配2 then 值2
+            ...
+            else 默认值
+            end ["别名"]
+                --查询职员表，根据部门加薪，当部门分别是1、2、3时，加薪金额分别是薪水的1.1倍、1.2倍、1.05倍，否则不加薪
+                    select e.*,
+                        case e.dept_id
+                            when 1 then e.sal*1.1
+                            when 2 then e.sal*1.2
+                            when 3 then e.sal*1.05
+                            else sal
+                            end "最终薪水"
+                        from EMPLOYEE e;
+
+test4：分组排序函数
+    1、row_number
+        根据col1分组，在分组内部根据col2排序，并返回次序(不作处理)：12312312...
+            row_number() over(
+                partition by coll order by cal2
+            )
+                --查询员工表，按照部门号分组显示，每组内按员工号排序，并赋予组内编号
+                    select row_number() over(
+                            partition by e.dept_id order by e.id
+                        ) "组内序号",
+                        e.*
+                        from EMPLOYEE e;
+    2、rank
+        根据col1分组，在分组内部根据col2排序，相同的数据返回相同排名(跳跃排序)：12245123...
+            rank() over(
+                partition by coll order by cal2
+            )
+                --查询员工表，按照部门号分组，同组内按薪水倒序排序，并给予组内排序编号
+                    select rank() over(
+                            partition by e.dept_id order by nvl(e.sal,0) desc
+                        ) "组内编号",
+                        e.*
+                        from EMPLOYEE e;
+    3、dense_rank
+        根据col1分组，在分组内部根据col2排序，相同的数据返回相同排名(连续排序)：122345123...
+            dense_rank() over(
+                partition by coll order by cal2
+            )
+                --关联员工表和部门表，按照部门号分组，每组内按照员工薪水排序，列出员工的部门名字、姓名和薪水
+                    select dense_rank() over(
+                            partition by e.dept_id order by nvl(sal,0) desc
+                        ) "组内编号",
+                        d.name, e.name, e.sal
+                        from EMPLOYEE e, DEPT d
+                        where e.dept_id=d.id;
+
+test5：集合操作
+    两个结果集的结构相同才能进行集合操作
+        结构相同：列的个数、顺序、数据类型都相同--查询项要一一对应相同
+        order by子句要放在最后一个查询语句中或者在最终结果之外
+    1、union合集(去重)
+    2、union all合集(不去重，保留所有)
+    3、intersect交集(共有的)
+    4、minus差集(A-B:A有但B没有)
+        --查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序
+            select sal,name from employee where name like '%曹%'
+                union
+                select sal,name from employee where name like '%刘%' order by sal desc;
+        --查询名字含曹与含刘的员工的合集(不允许重复)，并按工资倒序排序（推荐）
+            select a.* from
+                (
+                    select * from employee where name like '%曹%'
+                    union
+                    select * from employee where name like '%刘%'
+                ) a
+                order by a.sal desc;
+
+test6：事务
+        事务控制语言TCL
+    1、commit：事务提交，将所有的数据改变(事务)提交
+        事务指对表数据的增删改查操作（DML）
+        事务提交之前表或行会被锁住，而且其他连接无法查到变化
+    2、rollback：事务回滚，回退到事务之初
+        回滚到上一次提交的时候
+    3、savepoint：事务保存点(不常用)，用于回滚到该保存点时的操作
+        savepoint 保存点名字; --创建保存点
+        rollback to 保存点名字; --回滚到某个保存点时的状态
+            例子：
+                savepoint first;
+                rollback to first;
+
+
+备注：
+1、锁分类：
+	锁行、锁表
+	悲观锁、乐观锁
+	分布式事务、分布式锁
+
+
+</pre>
+
+<h1>day5：序列、约束、视图、索引</h1>
+<pre>
+
+test1：oracle序列
+        是一种用来生成唯一数字值的数据库对象。
+        序列的值由Oracle程序按递增或递减顺序自动生成
+        通常用来自动产生表的主键值
+        一个序列可以为多个表提供主键值
+    1、创建序列
+        create sequence sequence_name   --sequence_name是序列名
+        [ start with i ]                                    --序列的第一个序列值是i
+        [ increment by j ]                              --序列的递增值是j，如果j是正数就递增，如果是负数就递减
+        [ maxvalue m | nomaxvalue ]          --序列可生成的最大值是m或者不设置最大值
+        [ minvalue n | nominvalue ]            --序列可生成的最小值是n或者不设置最小值
+        [ cycle | nocycle ]                              --cycle表示在递增或递减至最值后是否继续循环，默认是nocycle
+        [ cache p | nocache ]                        --先预取p个数据在缓存中，以提高序列值的生成效率，默认是20
+            --创建一个序列，初始值是1000，递增10，最大值是9999
+                create sequence seq_name1
+                start with 1000
+                increment by 10
+                maxvalue 9999;
+    2、查看序列
+        --查看当前用户的序列
+            select * from user_sequences
+        --查看所有用户的序列
+            select * from all_sequences;
+        --获取序列的下个值
+            select seq_name1.nextval from dual;
+        --获取序列的当前值（序列创建后，必须先执行一次nextval ，之后才能使用currval）
+            select seq_name1.currval from dual;
+    3、删除序列
+        drop sequence 序列名
+            --删除序列seq_name1
+                drop sequence seq_name1;
+
+test2：约束 constraint
+        用于确保数据库数据满足特定的商业逻辑或者企业规则，对DML操作有效
+    1、非空约束 not null
+        保证字段值不能为null
+        not null约束只能在列级定义，不能在表级定义
+        --建表时添加非空约束
+            create table NN(
+                ID number(10) not null, --简写方式
+                NAME varchar2(10) constraint nn_name_nn not null, --别名方式
+                AGE number(3)
+            );
+        --建表后添加非空约束
+            alter table NN modify(
+                AGE number(3) not null
+            );
+        --取消非空约束
+            alter table NN modify(
+                AGE number NN null
+            );
+    2、唯一约束 unique
+        用于保证字段或者字段的组合不出现重复值
+        可以使用表级和列级定义
+        --建表时添加唯一约束
+            create table UQ(
+                ID number(10) unique, --列级约束
+                NAME varchar2(10),
+                AGE number(3),
+                constraint uq_name_uq unique(name) --表级约束
+            );
+        --建表后添加唯一约束
+            alter table UQ modify(AGE number(3) unique); --列级约束
+            alter table UQ add constraint uq_age_uq unique(age); --表级约束
+        --删除唯一约束
+            alter table UQ drop constraint uq_age_uq; --表级约束（列级约束需要先查询约束名再删除）
+    3、主键约束 primary key
+        相当于非空(notnull)且唯一(unique)的组合
+        主键字段可以是单字段或多字段组合
+        一个表上只允许建立一个主键
+        主键原则：
+            选择主键应该是对系统无意义的数据列
+            永远也不要更新主键，让主键除了唯一标识一行之外，再无其他的用途
+            主键不应包含动态变化的数据，如时间戳
+            主键应自动生成，不要人为干预，以免使它带有除了唯一标识一行以外的意义
+            主键尽量建立在单列上
+        --建表时添加主键约束
+            create table PK1(
+                ID number(10) primary key --列级约束
+            );
+            create table PK2(
+                ID number(10),
+                constraint pk1_id_pk primary key(ID) --表级约束
+            );
+        --联合主键约束
+            create table PK3(
+                ID number(10),
+                NAME varchar2(10),
+                constraint pk3_id_name_pk primary key(ID,NAME) --联合主键约束只能用表级约束定义
+            );
+        --建表后创建主键约束
+            alter table PK3 modify(ID number(10) primary key); --列级约束
+            alter table PK3 add(constraint pk3_id_pk primary key(id)); --表级约束
+        --删除主键
+            alter table PK3 drop constraint pk3_id_pk; --表级约束
+            alter table PK3 drop primary key; --主键只有一个所以可以
+    4、外键约束 foreign key references
+        外键约束条件定义在两个表的字段或一个表的两个字段上，用于保证相关两个字段的关系
+        外键约束条件包括两个方面的数据约束：
+            从表上定义的外键的列值，必须从主表被参照的列值中选取，或者为NULL；
+            当主表参照列的值被从表参照时，主表的该行记录不允许被删除
+        外键约束对性能的影响
+            如果在一个频繁DML操作的表上建立外键，每次DML操作，
+                都将导致数据库自动对外键所关联的对应表做检查，产生开销。
+            另外外键确定了主从表的先后生成关系，有时会影响业务逻辑
+        --创建class和student表并建立主外键关系
+            create table CLASS(
+            	ID number(11) primary key,
+            	NAME varchar2(20)
+            );
+            create table STUDENT(
+            	SID number(11) primary key,
+            	NAME varchar2(20),
+            	CID number(11),
+            	constraint stu_cid_fk foreign key(CID) references CLASS(ID)
+            );
+    5、检查约束 check
+        强制在字段上的每个值都要满足Check中定义的条件
+        --创建表时添加检查约束
+            create table CK(
+            	ID number check(ID>0 and ID<1000),
+            	NAME varchar2(10),
+            	SEX varchar2(1),
+            	constraint ck_name_ck check(SEX in ('M','F'))
+            );
+        --创建表后添加检查约束
+            alter table CK add(constraint ck_name_ck check(NAME like 'stu%'));
+        --删除检查约束
+            alter table CK drop constraint ck_name_ck;
+
+test3：视图（提升查询效率）
+        视图(view)被称为虚表，是一个虚拟的表
+        视图的本质是对应一条select语句，可以看做是该select语句的快捷方式
+        视图是映射到数据库表的查询语句，当数据库表发生变化时，视图数据也随着发生变化
+    1、创建视图
+        create [or replace] view view_name[(列1 别名,列2 别名...)]
+        as
+        select_statement --查询语句（对应的表称为基表）
+        [with read only] --只读视图（不能执行修改的DML语句，只能查询）
+        [with check option]; --约束视图（结果要符合select_statement语句中where的条件）
+            --创建视图并验证约束视图
+                --1、创建视图
+                create or replace view V_EMP(ID,NAME,SAL)
+                as
+                select ID,NAME,SAL from EMPLOYEE where id=1
+                with check option;
+                --2、验证视图
+                insert into V_EMP values(2,'a',9000); --报错：视图where字句违规
+                update V_EMP set NAME='a2' where ID=1; --正常运行
+    2、查询视图
+        select * from view_name;
+        --查询视图
+            select * from V_EMP;
+    3、删除视图
+        drop view view_name;
+        --删除视图
+            drop view V_EMP;
+
+test4：索引（提升查询效率）
+        查询有索引的列时自动应用其索引
+        索引是一种允许直接访问数据表中某一数据行的树型结构
+        索引记录中存有索引关键字和指向表中数据的指针（地址）
+        对索引进行的I/O操作比对表进行操作要少很多
+        主键或者唯一约束默认有唯一索引(某列任意两行的值都不相同)
+        索引创建不合理时也可能使性能下降
+    1、创建索引
+        create [unique] index index_name
+            on table(column[, column…]);
+        --在employee表的sal列创建索引
+            create index I_EMP on EMPLOYEE(sal);
+    2、修改(重建)索引
+        alter index index_name rebuild;
+        --重建索引
+            alter index I_EMP rebuild;
+    3、删除索引
+        drop index index_emp_xxx;
+        --删除索引
+            drop index I_EMP;
+    4、通过索引提高查询效率
+        为提升查询效率，创建和使用索引的原则：
+        为经常出现在WHERE子句中的列创建索引
+        为经常出现在ORDER BY、DISTINCT后面的字段建立索引。
+        如果建立的是复合索引，索引的字段顺序要和这些关键字后面的字段顺序一致
+        为经常作为表的连接条件的列上创建索引
+        不要在经常做DML操作的表上建立索引
+        一般来说，不需要为比较小的表创建索引
+        限制表上的索引数目，索引并不是越多越好
+        删除很少被使用的、不合理的索引
+
+备注：
+创建与删除
+    create 关键词 名称
+        create table 表名
+        create sequence 序列名
+        create view 视图名 as
+        create index 索引名 on
+        create user 用户名
+        create tablespace 表空间名
+    drop 关键词 名称
+        drop table 表名
+        drop sequence 序列名
+        drop view 视图名
+        drop index 索引名
+
+</pre>
+
+</body>
+</html>
+
+
